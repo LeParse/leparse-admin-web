@@ -1,0 +1,29 @@
+@keyframes background {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.layoutGrid {
+  display: grid;
+  grid-template-areas: "menu content content content content content content content content content content content content content content content";
+
+  background: linear-gradient(
+    -45deg,
+    #50c5f7bf,
+    #0a99d5bf,
+    #079786bf,
+    #076c97bf
+  );
+  background-size: 200% 200%;
+  animation: background 25s ease infinite;
+
+  width: 100vw;
+  height: 100vh;
+}
