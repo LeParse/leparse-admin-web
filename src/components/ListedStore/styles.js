@@ -21,7 +21,7 @@ export const Container = styled.div`
 
   p {
     color: ${colors.black};
-    font-size: 1.125rem;
+    font-size: 1rem;
     font-family: Raleway;
     font-style: normal;
     font-weight: 400;

@@ -107,7 +107,7 @@ export const PageLink = styled.div`
     color: ${colors.black};
     text-decoration: none;
 
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     font-family: Raleway;
     font-style: normal;
     font-weight: 600;
@@ -119,7 +119,7 @@ export const PageLink = styled.div`
 
     img {
       margin-right: 1.5rem;
-      max-width: 1.75rem;
+      max-width: 1.5rem;
       max-height: 2.15388rem;
     }
   }

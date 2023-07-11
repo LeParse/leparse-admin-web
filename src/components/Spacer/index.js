@@ -6,10 +6,10 @@ const Spacer = ({ vertical }) => {
         width: vertical ? "1px" : "100%",
         height: vertical ? "100%" : "1px",
         borderRadius: 24,
-        marginTop: vertical ? 0 : "2rem",
-        marginBottom: vertical ? 0 : "2rem",
-        marginLeft: vertical ? "2rem" : 0,
-        marginRight: vertical ? "2rem" : 0,
+        marginTop: vertical ? 0 : "1.5rem",
+        marginBottom: vertical ? 0 : "1.5rem",
+        marginLeft: vertical ? "1.5rem" : 0,
+        marginRight: vertical ? "1.5rem" : 0,
       }}
     />
   );

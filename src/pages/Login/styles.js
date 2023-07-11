@@ -15,18 +15,6 @@ const loginAnimation = keyframes`
   }
 `;
 
-const backgroundGradient = keyframes`
-  0% {
-		background-position: 0% 50%;
-	}
-	50% {
-		background-position: 100% 50%;
-	}
-	100% {
-		background-position: 0% 50%;
-	}
-`;
-
 export const Container = styled.div`
   width: 100vw;
   height: 100vh;
@@ -35,15 +23,7 @@ export const Container = styled.div`
   align-items: center;
   justify-content: center;
 
-  background: linear-gradient(
-    -45deg,
-    #50c5f7bf,
-    ${colors.primary}bf,
-    #079786bf,
-    #076c97bf
-  );
-  background-size: 200% 200%;
-  animation: ${backgroundGradient} 25s ease infinite;
+  background-color: transparent;
 `;
 
 export const Form = styled.form`

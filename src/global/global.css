@@ -1,3 +1,15 @@
+@property --x {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 0%;
+}
+
+@property --y {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 0%;
+}
+
 @keyframes background {
   0% {
     background-position: 0% 50%;
@@ -10,20 +22,76 @@
   }
 }
 
+@keyframes colorChange {
+  0% {
+    --x: 0%;
+    --y: 0%;
+  }
+  25% {
+    --x: 100%;
+    --y: 100%;
+  }
+  50% {
+    --x: 100%;
+    --y: 0%;
+  }
+  100% {
+    --x: 0%;
+    --y: 100%;
+  }
+}
+
+html,
+body {
+  background: rgb(39, 82, 99);
+  background: radial-gradient(
+    farthest-corner at var(--x) var(--y),
+    rgba(39, 82, 99, 1) 0%,
+    rgba(16, 96, 101, 1) 35%,
+    rgba(17, 86, 112, 1) 69%,
+    rgba(17, 42, 53, 1) 100%
+  );
+
+  background-size: 200% 350%;
+  animation: colorChange 25s ease infinite alternate;
+}
+
 .layoutGrid {
   display: grid;
   grid-template-areas: "menu content content content content content content content content content content content content content content content";
 
-  background: linear-gradient(
-    -45deg,
-    #50c5f7bf,
-    #0a99d5bf,
-    #079786bf,
-    #076c97bf
-  );
-  background-size: 200% 200%;
-  animation: background 25s ease infinite;
+  width: 100%;
+  height: 100%;
 
-  width: 100vw;
-  height: 100vh;
+  gap: 1rem;
+}
+
+.root-expanded {
+  grid-template-columns: 4fr 0fr !important;
+  grid-template-rows: 4fr 1fr 1fr 1fr !important;
+
+  /* margin-left: -1.5%; */
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 0.5rem;
+  right: -1000px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 1rem;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #bfbfbf;
+  border-radius: 1rem;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #9b9b9b;
 }
