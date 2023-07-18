@@ -104,7 +104,7 @@ export const PageLink = styled.div`
     align-items: center;
     justify-content: flex-start;
 
-    color: ${colors.black};
+    color: ${colors.primary};
     text-decoration: none;
 
     font-size: 1.25rem;

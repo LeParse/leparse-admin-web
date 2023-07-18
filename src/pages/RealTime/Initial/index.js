@@ -1,5 +1,3 @@
-import { useRef } from "react";
-
 import Block from "../../../components/Block";
 import Spacer from "../../../components/Spacer";
 import ListedUser from "../../../components/ListedUser";
@@ -19,8 +17,6 @@ import colors from "../../../global/colors";
 import { Container } from "./styles";
 
 const RealTime = () => {
-  let rootContainerHeight = useRef(0);
-
   function seeMoreUsers() {
     let rootContainer = document.getElementById("root-container");
     let usersContainer = document.getElementById("users-container");
@@ -38,9 +34,6 @@ const RealTime = () => {
         style={{
           gridArea: "users",
           zIndex: 99,
-          // width: "39.125rem",
-          // height: "25.125rem",
-          // flexShrink: 0,
         }}
         id="users-container"
       >
@@ -225,7 +218,7 @@ const RealTime = () => {
           />
         </div>
 
-        {/* <div
+        <div
           style={{
             position: "absolute",
             top: 0,
@@ -251,7 +244,7 @@ const RealTime = () => {
           >
             Em breve...
           </p>
-        </div> */}
+        </div>
       </Block>
 
       <Block
@@ -274,7 +267,7 @@ const RealTime = () => {
           <SlArrowRight color={colors.black} size={18} />
         </div>
 
-        {/* <div
+        <div
           style={{
             position: "absolute",
             top: 0,
@@ -300,7 +293,7 @@ const RealTime = () => {
           >
             Em breve...
           </p>
-        </div> */}
+        </div>
       </Block>
     </Container>
   );

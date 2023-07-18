@@ -1,14 +1,16 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 
 import { Link } from "react-router-dom";
 
 import logo from "../../assets/images/logo.png";
 import logout from "../../assets/images/logout.png";
 
-import realTimeIcon from "../../assets/images/real-time.png";
-import realTimeActiveIcon from "../../assets/images/real-time-active.png";
-import loyaltyIcon from "../../assets/images/loyalty.png";
-import loyaltyActiveIcon from "../../assets/images/loyalty-active.png";
+import realTimeIcon from "../../assets/icons/real-time.png";
+import realTimeActiveIcon from "../../assets/icons/real-time-active.png";
+import loyaltyIcon from "../../assets/icons/loyalty.png";
+import loyaltyActiveIcon from "../../assets/icons/loyalty-active.png";
+import settingsIcon from "../../assets/icons/settings.png";
+import settingsActiveIcon from "../../assets/icons/settings-active.png";
 
 import { Container, PageLink, PageSelector, Footer } from "./styles";
 
@@ -27,10 +29,15 @@ const NavBar = () => {
       case "loyalty":
         setCurrentPage(1);
         break;
+      case "settings":
+        setCurrentPage(2);
+        break;
       default:
         break;
     }
   }
+
+  useEffect(clickPageLink, []);
 
   return (
     <Container>
@@ -77,6 +84,24 @@ const NavBar = () => {
               draggable={false}
             />
             <h1>Loyalty</h1>
+          </Link>
+        </PageLink>
+
+        <PageLink
+          className={
+            window.location.pathname.replace("/app/", "") === "settings"
+              ? "active"
+              : ""
+          }
+          onClick={clickPageLink}
+        >
+          <Link to="/app/settings">
+            <img
+              src={currentPage === 2 ? settingsActiveIcon : settingsIcon}
+              alt="Settings"
+              draggable={false}
+            />
+            <h1>Configurações</h1>
           </Link>
         </PageLink>
       </div>
