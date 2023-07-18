@@ -10,10 +10,23 @@ import RealTime from "./pages/RealTime/Initial";
 
 //#endregion
 
+//#region Loyalty
+
 import Loyalty from "./pages/Loyalty/Initial";
 
+//#endregion
+
+//#region Settings
+
+import Settings from "./pages/Settings/Initial";
+
+//#endregion
+
 const Layout = () => {
-  if (window.location.pathname === "/app") {
+  if (
+    window.location.pathname === "/app" ||
+    window.location.pathname === "/app/"
+  ) {
     window.location.pathname = "/app/real-time";
   }
 
@@ -48,6 +61,7 @@ const Router = () => {
             <Route index element={<RealTime />} />
           </Route>
           <Route path="loyalty" element={<Loyalty />} />
+          <Route path="settings" element={<Settings />} />
         </Route>
       </Routes>
     </BrowserRouter>

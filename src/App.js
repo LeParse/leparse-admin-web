@@ -1,7 +1,12 @@
+import GlobalProvider from "./contexts/global";
 import Router from "./Router";
 
 function App() {
-  return <Router />;
+  return (
+    <GlobalProvider>
+      <Router />
+    </GlobalProvider>
+  );
 }
 
 export default App;
