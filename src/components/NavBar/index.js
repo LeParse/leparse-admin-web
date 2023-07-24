@@ -3,8 +3,10 @@ import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { m } from "framer-motion";
 
+import { useGlobal } from "../../contexts/global";
+
 import logo from "../../assets/images/logo.png";
-import logout from "../../assets/images/logout.png";
+import logoutIcon from "../../assets/images/logout.png";
 
 import realTimeIcon from "../../assets/icons/real-time.png";
 import realTimeActiveIcon from "../../assets/icons/real-time-active.png";
@@ -16,6 +18,8 @@ import settingsActiveIcon from "../../assets/icons/settings-active.png";
 import { Container, PageLink, PageSelector, Footer } from "./styles";
 
 const NavBar = () => {
+  const { logout } = useGlobal();
+
   const [currentPage, setCurrentPage] = useState(0);
 
   let pageSelectorRef = useRef();
@@ -128,8 +132,8 @@ const NavBar = () => {
         </div>
 
         <Footer>
-          <Link id="logout" to="/login">
-            <img src={logout} alt="Sair" draggable={false} />
+          <Link id="logout" to="/login" onClick={logout}>
+            <img src={logoutIcon} alt="Sair" draggable={false} />
             Sair
           </Link>
 

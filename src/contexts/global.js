@@ -33,6 +33,13 @@ const GlobalProvider = ({ children }) => {
     });
   }
 
+  function logout() {
+    setUser({});
+    setToken("");
+    localStorage.removeItem("$leparse-admin-user");
+    localStorage.removeItem("$leparse-admin-token");
+  }
+
   function verifyToken() {
     if (
       !window.location.pathname.includes("/login") &&
@@ -88,6 +95,7 @@ const GlobalProvider = ({ children }) => {
     <GlobalContext.Provider
       value={{
         login,
+        logout,
         user,
         token,
         enterprise,
