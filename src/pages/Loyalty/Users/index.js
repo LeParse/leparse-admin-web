@@ -86,7 +86,7 @@ const Users = () => {
 
       setTimeout(() => {
         toggleEditUserModal();
-      }, 1000);
+      }, 500);
 
       toast.success("Salvo!");
     } catch (error) {
