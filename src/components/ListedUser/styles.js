@@ -5,12 +5,12 @@ import colors from "../../global/colors";
 export const Container = styled.div`
   width: 100%;
 
-  display: grid;
+  display: flex;
 
-  grid-template-areas: "icon name stores stores details";
+  align-items: center;
+  justify-content: space-between;
 
-  justify-content: center;
-  gap: 1.25rem;
+  gap: 1rem;
 
   transition: 100ms ease;
 
@@ -42,6 +42,11 @@ export const Container = styled.div`
     overflow: hidden;
     text-overflow: ellipsis;
     transition: 100ms ease;
+
+    min-width: 12rem;
+    width: 100%;
+
+    flex-basis: calc(86% / 3);
   }
 
   .stores {
@@ -57,5 +62,10 @@ export const Container = styled.div`
     overflow: hidden;
     text-overflow: ellipsis;
     transition: 100ms ease;
+
+    min-width: 7rem;
+    width: 100%;
+
+    flex-basis: calc(86% / 1.5);
   }
 `;

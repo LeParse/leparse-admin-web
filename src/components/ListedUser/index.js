@@ -15,7 +15,13 @@ const ListedUser = ({ name, stores, id }) => {
 
   return (
     <Container onClick={gotoUser}>
-      <FaUser size={24} />
+      <FaUser
+        size={24}
+        style={{
+          gridArea: "icon",
+          flexBasis: "7%",
+        }}
+      />
       <p className="name">{name}</p>
       <p className="stores">
         {stores.map((store, _i) => {
@@ -31,6 +37,7 @@ const ListedUser = ({ name, stores, id }) => {
         color={colors.black}
         style={{
           gridArea: "details",
+          flexBasis: "7%",
         }}
       />
     </Container>

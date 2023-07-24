@@ -3,22 +3,23 @@ import styled from "styled-components";
 import colors from "../../../global/colors";
 
 export const Container = styled.div`
-  /* width: 100%;
-  height: 100%; */
+  width: 100%;
+  height: 100vh;
 
   display: grid;
-  /* flex-wrap: wrap; */
-  align-items: center;
-  justify-content: center;
 
-  /* grid-template-columns: 1.5fr 2fr;
-  grid-template-rows: repeat(4, 1fr); */
+  gap: 1.5rem;
+
+  padding-bottom: 1rem;
+  padding-right: 1rem;
+
+  padding: 1rem;
 
   grid-template-areas:
-    "users metrics"
-    "users metrics"
-    "stores tuitions"
-    "stores tuitions";
+    "title title"
+    "users vouchers"
+    "users vouchers"
+    "users tuitions";
 
   .blockTitle {
     color: ${colors.black};
@@ -36,17 +37,6 @@ export const Container = styled.div`
     flex-direction: column;
 
     gap: 1.5rem;
-  }
-
-  .storesList {
-    width: 100%;
-
-    display: grid;
-
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(3, 1fr);
-
-    gap: 2rem;
   }
 
   .tuitions {
@@ -102,11 +92,22 @@ export const Container = styled.div`
     }
   }
 
-  transition: 500ms ease;
-  overflow: hidden;
+  overflow: auto;
+`;
 
-  .expanded {
-    /* height: 500px !important; */
-    z-index: 99;
+export const Title = styled.div`
+  grid-area: title;
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+
+  padding: 0 2rem;
+
+  p {
+    font-family: Raleway;
+    font-size: 3rem;
+    font-weight: 300;
+    color: ${colors.white};
   }
 `;

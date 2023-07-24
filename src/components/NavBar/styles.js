@@ -3,9 +3,8 @@ import styled from "styled-components";
 import colors from "../../global/colors";
 
 export const Container = styled.div`
-  width: 4rem;
-  height: 75vh;
-  margin-top: calc(12.5vh - 1.75rem);
+  width: 6rem;
+  height: 100vh;
 
   border-radius: 0rem 4rem 4rem 0rem;
   background: #fff;
@@ -17,7 +16,6 @@ export const Container = styled.div`
   position: relative;
 
   padding: 0 1rem;
-  padding-top: 3.5rem;
 
   overflow: hidden;
 
@@ -26,6 +24,7 @@ export const Container = styled.div`
     height: 4rem;
 
     border-radius: 2rem;
+    margin-top: 3.5rem;
 
     box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.25);
   }

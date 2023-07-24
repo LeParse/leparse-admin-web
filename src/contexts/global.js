@@ -1,20 +1,102 @@
-import { createContext, useContext } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
+
 import { toast } from "react-toastify";
 
-import adminAPI from "../services/admin-api";
+import api from "../services/api";
 
 const GlobalContext = createContext({});
 
 const GlobalProvider = ({ children }) => {
-  async function login(username, password) {
-    try {
-      // const user = await api.post('')
-    } catch (error) {
-      toast("Erro no login...", { type: "error" });
+  const [user, setUser] = useState({});
+  const [token, setToken] = useState("");
+
+  const [enterprise, setEnterprise] = useState({});
+
+  function login(username = "igoraugusto", password = "marina2207") {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const { data } = await api.post("/auth/login", {
+          username,
+          password,
+        });
+
+        setUser(data.user);
+        setToken(data.token);
+
+        localStorage.setItem("$leparse-admin-user", JSON.stringify(data.user));
+        localStorage.setItem("$leparse-admin-token", data.token);
+
+        resolve(data.user);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  function verifyToken() {
+    if (
+      !window.location.pathname.includes("/login") &&
+      token === "" &&
+      !localStorage.getItem("$leparse-admin-token")
+    ) {
+      window.location = "/login?noToken=true";
     }
   }
 
-  return <GlobalContext.Provider>{children}</GlobalContext.Provider>;
+  function fetchLocalStorage() {
+    localStorage.getItem("$leparse-admin-user") &&
+      setUser(JSON.parse(localStorage.getItem("$leparse-admin-user")));
+    localStorage.getItem("$leparse-admin-token") &&
+      setToken(localStorage.getItem("$leparse-admin-token"));
+  }
+
+  async function getEnterprise() {
+    if (JSON.stringify(user) !== JSON.stringify({})) {
+      try {
+        const { data } = await api.get(
+          `/global/get-enterprise?enterprise_id=${user.cod_enterprise}`
+        );
+
+        const { enterprise } = data;
+
+        setEnterprise(enterprise);
+      } catch (error) {
+        if (error.response) {
+          switch (error.response.status) {
+            case 404:
+              return toast.error("Empresa não encontrada");
+            default:
+              return toast.error(
+                "Erro desconhecido! Tente novamente mais tarde..."
+              );
+          }
+        }
+
+        toast.error("Erro desconhecido! Tente novamente mais tarde...");
+      }
+    }
+  }
+
+  useEffect(verifyToken, []);
+  useEffect(fetchLocalStorage, []);
+
+  useEffect(() => {
+    getEnterprise();
+  }, [user]);
+
+  return (
+    <GlobalContext.Provider
+      value={{
+        login,
+        user,
+        token,
+        enterprise,
+        getEnterprise,
+      }}
+    >
+      {children}
+    </GlobalContext.Provider>
+  );
 };
 
 export default GlobalProvider;

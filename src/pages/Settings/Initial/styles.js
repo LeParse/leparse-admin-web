@@ -3,10 +3,10 @@ import styled from "styled-components";
 import colors from "../../../global/colors";
 
 export const Container = styled.div`
-  width: 99%;
+  width: 100%;
+  height: 100vh;
 
-  margin-top: 1rem;
-  /* margin-left: -1rem; */
+  padding: 1rem;
 
   border-radius: 2rem;
 
@@ -50,9 +50,16 @@ export const Container = styled.div`
   }
 `;
 
+export const Top = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+`;
+
 export const Content = styled.div`
   display: grid;
-  height: 87.5%;
+  height: 100%;
 
   grid-template-columns: 0.9fr 0.2fr 0.9fr;
 `;
@@ -68,28 +75,10 @@ export const Data = styled.div`
 
   margin-bottom: 2rem;
 
-  p,
-  input {
-    font-family: Raleway;
-    color: ${colors.black};
-  }
-
   p {
     font-size: 0.9rem;
-  }
-
-  input {
-    font-size: 1rem;
-    border: none;
-    outline: none;
-    padding: 1rem;
-    padding-left: 0.5rem;
-
-    transition: 100ms ease;
-
-    &:focus {
-      border-bottom: 1px solid ${colors.primary};
-    }
+    font-family: Raleway;
+    color: ${colors.black};
   }
 `;
 
@@ -101,9 +90,10 @@ export const Address = styled.div`
 `;
 
 export const EnterpriseContainer = styled.div`
-  width: 235px;
-  height: 335px;
+  width: 300px;
+  height: 400px;
   border-radius: 1rem;
+  overflow: hidden;
 
   background: rgb(27, 27, 27);
   background: linear-gradient(
@@ -265,7 +255,7 @@ export const Drop = styled.div`
 `;
 
 export const Store = styled.div`
-  min-height: 5rem;
+  height: 7rem;
   border-radius: 1rem;
   border: 1px solid rgba(0, 0, 0, 0.1);
   position: relative;
@@ -311,20 +301,29 @@ export const Store = styled.div`
 
     transition: 100ms ease;
 
-    &:nth-child(3) {
-      top: unset;
-      bottom: 0.5rem;
-      right: 0.5rem;
-      width: 3rem;
-      height: 3rem;
-    }
-
-    &:nth-child(2):hover {
+    &:hover {
       margin-top: -0.25rem;
       transform: scale(1.05);
     }
 
-    &:nth-child(3):hover {
+    &:hover {
+      margin-bottom: 0.25rem;
+      transform: scale(1.05);
+    }
+  }
+
+  svg {
+    width: 2rem;
+    height: 2rem;
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+
+    fill: white;
+
+    transition: 100ms ease;
+
+    &:hover {
       margin-bottom: 0.25rem;
       transform: scale(1.05);
     }
@@ -333,12 +332,13 @@ export const Store = styled.div`
   &:hover {
     box-shadow: 0 0 15px -5px ${colors.primary};
     border: 1px solid ${colors.primary}33;
+    transform: scale(1.05);
   }
 `;
 
 export const AddStore = styled.div`
   width: 3rem;
-  min-height: 7rem;
+  height: 100%;
 
   align-self: center;
   border-radius: 1.5rem;

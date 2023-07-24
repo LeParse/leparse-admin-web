@@ -53,6 +53,21 @@
 html,
 body {
   background: rgb(39, 82, 99);
+
+  background: -moz-radial-gradient(
+    farthest-corner at var(--x) var(--y),
+    rgba(39, 82, 99, 1) 0%,
+    rgba(16, 96, 101, 1) 35%,
+    rgba(17, 86, 112, 1) 69%,
+    rgba(17, 42, 53, 1) 100%
+  );
+  background: -webkit-radial-gradient(
+    farthest-corner at var(--x) var(--y),
+    rgba(39, 82, 99, 1) 0%,
+    rgba(16, 96, 101, 1) 35%,
+    rgba(17, 86, 112, 1) 69%,
+    rgba(17, 42, 53, 1) 100%
+  );
   background: radial-gradient(
     farthest-corner at var(--x) var(--y),
     rgba(39, 82, 99, 1) 0%,
@@ -63,6 +78,8 @@ body {
 
   background-size: 200% 350%;
   animation: colorChange 25s ease infinite alternate;
+
+  overflow: hidden;
 }
 
 .layoutGrid {
@@ -73,9 +90,6 @@ body {
 
   grid-template-areas: "menu content";
 
-  width: 100vw;
-  height: 100vh;
-
   overflow: hidden;
 
   gap: 1rem;
@@ -84,8 +98,6 @@ body {
 .root-expanded {
   grid-template-columns: 4fr 0fr !important;
   grid-template-rows: 4fr 1fr 1fr 1fr !important;
-
-  /* margin-left: -1.5%; */
 }
 
 /* width */
