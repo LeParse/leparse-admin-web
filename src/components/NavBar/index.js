@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 
 import { Link } from "react-router-dom";
+import { m } from "framer-motion";
 
 import logo from "../../assets/images/logo.png";
 import logout from "../../assets/images/logout.png";
@@ -39,82 +40,103 @@ const NavBar = () => {
 
   useEffect(clickPageLink, []);
 
+  if (window.location.pathname.includes("/login")) {
+    return null;
+  }
+
   return (
-    <Container>
-      <img id="logo" src={logo} alt="Logo" draggable={false} />
+    <m.div
+      initial={{
+        x: "-8rem",
+      }}
+      animate={{
+        x: 0,
+      }}
+      exit={{
+        x: "-8rem",
+      }}
+      transition={{
+        type: "linear",
+      }}
+    >
+      <Container>
+        <img id="logo" src={logo} alt="Logo" draggable={false} />
 
-      <div className="pageLinks">
-        <PageSelector
-          style={{
-            top: `${64 * currentPage + 16 * currentPage}px`,
-          }}
-          ref={pageSelectorRef}
-        />
+        <div className="pageLinks">
+          <PageSelector
+            style={{
+              top: `${64 * currentPage + 16 * currentPage}px`,
+            }}
+            ref={pageSelectorRef}
+          />
 
-        <PageLink
-          className={
-            window.location.pathname.replace("/app/", "") === "real-time"
-              ? "active"
-              : ""
-          }
-          onClick={clickPageLink}
-        >
-          <Link to="/app/real-time">
-            <img
-              src={currentPage === 0 ? realTimeActiveIcon : realTimeIcon}
-              alt="Real Time"
-              draggable={false}
-            />
-            <h1>Real Time</h1>
+          <PageLink
+            className={
+              window.location.pathname
+                .replace("/app/", "")
+                .includes("real-time")
+                ? "active"
+                : ""
+            }
+            onClick={clickPageLink}
+          >
+            <Link to="/app/real-time">
+              <img
+                src={currentPage === 0 ? realTimeActiveIcon : realTimeIcon}
+                alt="Real Time"
+                draggable={false}
+              />
+              <h1>Real Time</h1>
+            </Link>
+          </PageLink>
+
+          <PageLink
+            className={
+              window.location.pathname.replace("/app/", "").includes("loyalty")
+                ? "active"
+                : ""
+            }
+            onClick={clickPageLink}
+          >
+            <Link to="/app/loyalty">
+              <img
+                src={currentPage === 1 ? loyaltyActiveIcon : loyaltyIcon}
+                alt="Loyalty"
+                draggable={false}
+              />
+              <h1>Loyalty</h1>
+            </Link>
+          </PageLink>
+
+          <PageLink
+            className={
+              window.location.pathname.replace("/app/", "").includes("settings")
+                ? "active"
+                : ""
+            }
+            onClick={clickPageLink}
+          >
+            <Link to="/app/settings">
+              <img
+                src={currentPage === 2 ? settingsActiveIcon : settingsIcon}
+                alt="Settings"
+                draggable={false}
+              />
+              <h1>Configurações</h1>
+            </Link>
+          </PageLink>
+        </div>
+
+        <Footer>
+          <Link id="logout" to="/login">
+            <img src={logout} alt="Sair" draggable={false} />
+            Sair
           </Link>
-        </PageLink>
 
-        <PageLink
-          className={
-            window.location.pathname.replace("/app/", "") === "loyalty"
-              ? "active"
-              : ""
-          }
-          onClick={clickPageLink}
-        >
-          <Link to="/app/loyalty">
-            <img
-              src={currentPage === 1 ? loyaltyActiveIcon : loyaltyIcon}
-              alt="Loyalty"
-              draggable={false}
-            />
-            <h1>Loyalty</h1>
-          </Link>
-        </PageLink>
-
-        <PageLink
-          className={
-            window.location.pathname.replace("/app/", "") === "settings"
-              ? "active"
-              : ""
-          }
-          onClick={clickPageLink}
-        >
-          <Link to="/app/settings">
-            <img
-              src={currentPage === 2 ? settingsActiveIcon : settingsIcon}
-              alt="Settings"
-              draggable={false}
-            />
-            <h1>Configurações</h1>
-          </Link>
-        </PageLink>
-      </div>
-
-      <Footer>
-        <Link id="logout" to="/login">
-          <img src={logout} alt="Sair" draggable={false} />
-          Sair
-        </Link>
-
-        <p id="version">LeParse Admin - v1.0.0</p>
-      </Footer>
-    </Container>
+          <p id="version">LeParse Admin - v1.0.0</p>
+        </Footer>
+      </Container>
+    </m.div>
   );
 };
 

@@ -1,19 +1,5 @@
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 import colors from "../../global/colors";
-
-const loginAnimation = keyframes`
-  25% {
-    width: 40%;
-  }
-
-  50% {
-    width: 48px;
-  }
-
-  100% {
-    width: 64px;
-  }
-`;
 
 export const Container = styled.div`
   width: 100vw;
@@ -53,6 +39,13 @@ export const AuthInput = styled.div`
   margin-top: 4rem;
 
   width: 50%;
+  background-color: red;
+
+  /* display: flex; */
+  align-self: center;
+  justify-content: center;
+
+  position: relative;
 
   svg {
     position: absolute;
@@ -70,6 +63,7 @@ export const AuthInput = styled.div`
   }
 
   input {
+    /* width: 100%; */
     border: none;
     border-bottom: 1px solid rgba(0, 0, 0, 0.25);
 
@@ -118,44 +112,5 @@ export const AuthInput = styled.div`
       bottom: 4rem;
       color: rgba(0, 0, 0, 0.75);
     }
-  }
-`;
-
-export const LoginButton = styled.button.attrs({ type: "submit" })`
-  width: 35%;
-  height: 64px;
-
-  background-color: ${colors.primary};
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border-radius: 32px;
-  border: none;
-
-  color: #fff;
-  font-size: 1.5rem;
-  font-family: Raleway;
-  font-style: normal;
-  font-weight: 700;
-  line-height: normal;
-
-  margin-top: 2.75rem;
-
-  z-index: 1;
-  cursor: pointer;
-
-  transition: 100ms ease;
-
-  &:hover {
-    transform: scale(0.95);
-  }
-
-  &.clicked {
-    animation: ${loginAnimation} 500ms forwards ease;
-    color: transparent;
-
-    padding-top: 1rem;
   }
 `;
