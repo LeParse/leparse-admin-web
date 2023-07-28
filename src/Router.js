@@ -4,6 +4,7 @@ import {
   Route,
   useLocation,
   Outlet,
+  Navigate,
 } from "react-router-dom";
 import { AnimatePresence, LazyMotion, domMax, m } from "framer-motion";
 
@@ -41,11 +42,7 @@ const LoyaltyOutlet = () => {
 const AnimatedRoutes = () => {
   const location = useLocation();
 
-  if (
-    location.pathname === "/app" ||
-    location.pathname === "/app/" ||
-    location.pathname === "/"
-  ) {
+  if (location.pathname === "/app" || location.pathname === "/app/") {
     window.location.pathname = "/app/real-time";
   }
 
@@ -90,6 +87,7 @@ const AnimatedRoutes = () => {
                 </Route>
                 <Route path="settings" element={<Settings />} />
               </Route>
+              <Route path="*" element={<Navigate to="/login" replace />} />
             </Routes>
           </AnimatePresence>
         </div>
