@@ -13,6 +13,7 @@ const LoyaltyProvider = ({ children }) => {
   let initialLoading = useRef(true);
 
   const [users, setUsers] = useState([]);
+  const [vouchers, setVouchers] = useState([]);
 
   async function getData() {
     if (JSON.stringify(enterprise) !== JSON.stringify({})) {
@@ -21,9 +22,10 @@ const LoyaltyProvider = ({ children }) => {
           const { data } = await api.get(
             `/loyalty/?enterprise_id=${enterprise._id}`
           );
-          const { users } = data;
+          const { users, vouchers } = data;
 
           setUsers(users);
+          setVouchers(vouchers);
         } catch (error) {
           if (error.response) {
             switch (error.response.status) {
@@ -51,6 +53,8 @@ const LoyaltyProvider = ({ children }) => {
       value={{
         users,
         setUsers,
+        vouchers,
+        setVouchers,
       }}
     >
       {children}

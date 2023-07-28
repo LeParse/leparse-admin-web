@@ -1,4 +1,5 @@
 import InputMask from "react-input-mask";
+import CurrencyFormat from "react-currency-format";
 
 import colors from "../../global/colors";
 import { GlobalStyle } from "./styles";
@@ -11,8 +12,13 @@ const Input = (props) => {
   return (
     <>
       <GlobalStyle />
-      {props.masked ? (
+      {props?.masked ? (
         <InputMask {...props} style={props.withBorder ? withBorderStyle : {}} />
+      ) : props?.currency ? (
+        <CurrencyFormat
+          {...props}
+          style={props.withBorder ? withBorderStyle : {}}
+        />
       ) : (
         <input {...props} style={props.withBorder ? withBorderStyle : {}} />
       )}

@@ -17,9 +17,27 @@ export const Container = styled.div`
 
   grid-template-areas:
     "title title"
-    "users metrics"
-    "users metrics"
+    "users vouchers"
+    "users vouchers"
     "users tuitions";
+
+  .blockTitleContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    svg {
+      transition: 100ms ease;
+
+      cursor: pointer;
+
+      &:hover {
+        transform: translateY(-0.15rem) scale(1.05);
+        fill: ${colors.green};
+      }
+    }
+  }
 
   .blockTitle {
     color: ${colors.black};
@@ -64,14 +82,20 @@ export const Container = styled.div`
     display: flex;
     flex-direction: row;
 
+    background-color: #fff;
+    width: 100%;
+    height: 5rem;
+    left: 0;
+
     align-items: center;
+    justify-content: flex-end;
+    padding-right: 2rem;
 
     gap: 1rem;
 
     position: absolute;
 
-    bottom: 2rem;
-    right: 2rem;
+    bottom: 0;
 
     cursor: pointer;
 
@@ -104,5 +128,75 @@ export const Title = styled.div`
     font-size: 3rem;
     font-weight: 300;
     color: ${colors.white};
+  }
+`;
+
+export const CreateModal = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  .modalHeader {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 5rem;
+
+    p {
+      font-family: Raleway;
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+
+    svg {
+      width: 1.25rem;
+      height: 1.25rem;
+
+      cursor: pointer;
+
+      fill: ${colors.black};
+      transition: 100ms ease;
+
+      &:hover {
+        transform: translateY(-0.25rem) scale(1.05);
+        fill: ${colors.red};
+      }
+    }
+  }
+
+  .modalContent {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    p {
+      font-family: Raleway;
+      font-size: 1rem;
+      font-weight: 400;
+    }
+
+    input {
+      width: 6rem;
+    }
+
+    .value {
+      display: flex;
+      flex-direction: row;
+
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+  }
+
+  button {
+    width: 100%;
+    margin-top: 2rem;
+
+    background-color: ${colors.green};
+
+    align-self: center;
   }
 `;
