@@ -23,6 +23,7 @@ const Button = (props) => {
 
   return (
     <Container
+      {...props}
       ref={button}
       onClick={onClick}
       disabled={isPromissing}

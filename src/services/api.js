@@ -2,7 +2,7 @@ import axios from "axios";
 
 const api = axios.create({
   baseURL: "https://api.leparse.tech/admin",
-  // baseURL: "http://localhost:3003",
+  // baseURL: "http://192.168.15.8:3003",
 });
 
 api.interceptors.request.use(

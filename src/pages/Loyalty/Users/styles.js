@@ -126,19 +126,36 @@ export const Container = styled.div`
   table {
     width: 100%;
 
+    border-collapse: separate;
+
     th,
     td {
       font-family: Raleway;
       padding: 2rem 1rem;
       color: ${colors.black};
+      font-weight: 500;
+    }
+
+    td:nth-child(2) {
+      font-weight: 600;
+    }
+
+    th {
+      padding-top: 0.5rem;
+      opacity: 0.75;
+      border-bottom: 1px solid ${colors.primary};
     }
 
     thead {
+      position: sticky;
+      top: 0;
+      z-index: 99;
+
       text-align: left;
-      border-bottom: 1px solid ${colors.primary};
       font-size: 1.25rem;
       font-weight: 700;
       user-select: none;
+      background-color: ${colors.white};
     }
 
     tr {
@@ -234,6 +251,10 @@ export const Container = styled.div`
       gap: 1rem;
       align-items: center;
       justify-content: flex-end;
+
+      svg {
+        padding: 0.5rem;
+      }
     }
   }
 `;
@@ -254,7 +275,7 @@ export const Header = styled.div`
   h1 {
     font-family: Raleway;
     font-size: 2rem;
-    font-weight: 700;
+    font-weight: 900;
     color: ${colors.black};
   }
 
@@ -270,5 +291,154 @@ export const Header = styled.div`
       transform: translateX(-0.25rem) scale(1.05);
       fill: ${colors.primary};
     }
+  }
+
+  #createButton {
+    position: absolute;
+    right: 2rem;
+
+    padding: 0.5rem;
+
+    &:hover {
+      transform: translateY(-0.25rem);
+      fill: ${colors.green};
+    }
+  }
+`;
+
+export const CreateModal = styled.div`
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+
+  .modalHeader {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 5rem;
+
+    color: ${colors.black};
+
+    p {
+      font-family: Raleway;
+      font-size: 1.5rem;
+      font-weight: 900;
+    }
+
+    svg {
+      width: 1.25rem;
+      height: 1.25rem;
+
+      cursor: pointer;
+
+      fill: ${colors.black};
+      transition: 100ms ease;
+
+      &:hover {
+        transform: translateY(-0.25rem) scale(1.05);
+        fill: ${colors.red};
+      }
+    }
+  }
+
+  .modalContent {
+    width: 100%;
+    height: 100%;
+
+    display: grid;
+
+    grid-template-columns: 1fr 0.1fr 2fr;
+
+    gap: 1rem;
+
+    overflow: auto;
+
+    .field {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+
+      background-color: red;
+      gap: 2rem;
+
+      p {
+        font-family: Raleway;
+        font-size: 1rem;
+        font-weight: 400;
+      }
+
+      input {
+        width: 6rem;
+        text-align: right;
+      }
+    }
+
+    .left {
+      grid-column-start: 1;
+
+      display: grid;
+      height: 100%;
+
+      grid-template-areas:
+        "name nameInput"
+        "user userInput"
+        "email emailInput";
+
+      p,
+      input {
+        align-self: center;
+        font-family: Raleway;
+        color: ${colors.black};
+      }
+
+      p {
+        font-weight: 700;
+        opacity: 0.5;
+      }
+
+      input {
+        font-weight: 700;
+      }
+    }
+
+    .right {
+      grid-column-start: 3;
+      height: 100%;
+      overflow-x: visible;
+      overflow-y: auto;
+      position: relative;
+
+      padding-top: 2rem;
+      padding-bottom: 2rem;
+
+      -webkit-mask-image: linear-gradient(
+        180deg,
+        rgba(0, 0, 0, 0) 0%,
+        rgba(0, 0, 0, 1) 7.5% 92.5%,
+        rgba(0, 0, 0, 0) 100%
+      );
+      -webkit-mask-position: center;
+
+      mask-image: linear-gradient(
+        180deg,
+        rgba(0, 0, 0, 0) 0%,
+        rgba(0, 0, 0, 1) 7.5% 92.5%,
+        rgba(0, 0, 0, 0) 100%
+      );
+      mask-position: center;
+    }
+  }
+
+  button {
+    width: 12%;
+    height: 4rem;
+    margin-top: 2rem;
+
+    background-color: ${colors.green};
+
+    align-self: flex-end;
   }
 `;

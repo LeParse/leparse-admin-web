@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { AnimatePresence, m } from "framer-motion";
 import { toast } from "react-toastify";
+
+import { TiPlus } from "react-icons/ti";
 
 import { useGlobal } from "../../../contexts/global";
 import { useLoyalty } from "../../../contexts/loyalty";
@@ -13,6 +15,7 @@ import Modal from "../../../components/Modal";
 import Button from "../../../components/Button";
 import Spacer from "../../../components/Spacer";
 import NoContent from "../../../components/NoContent";
+import StoresList from "../../../components/StoresList";
 
 import noUserIcon from "../../../assets/icons/no-user-icon.jpg";
 
@@ -24,7 +27,7 @@ import { ReactComponent as CloseIcon } from "../../../assets/svg/close-icon.svg"
 import api from "../../../services/api";
 
 import colors from "../../../global/colors";
-import { Container, Header, GlobalStyle } from "./styles";
+import { Container, Header, GlobalStyle, CreateModal } from "./styles";
 
 const Users = () => {
   const navigate = useNavigate();
@@ -35,6 +38,14 @@ const Users = () => {
   const [selectStoresModal, setSelectStoresModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState({});
   const [selectedUnities, setSelectedUnities] = useState([]);
+
+  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+
+  const [unities, setUnities] = useState([]);
+
+  const [createUserModalVisible, setCreateUserModalVisible] = useState(false);
 
   function goBack() {
     navigate(-1);
@@ -51,24 +62,13 @@ const Users = () => {
     setRemoveUserModal(true);
   }
 
-  function selectStore(unity) {
-    let toValue = selectedUnities;
-    if (selectedUnities.includes(unity._id)) {
-      toValue.splice(selectedUnities.indexOf(unity._id), 1);
-    } else {
-      toValue.push(unity._id);
-    }
-
-    setSelectedUnities([...toValue]);
-  }
-
   async function edit() {
     if (selectedUser?.name?.trim() === "") {
       return toast.warn("Preencha o nome do usuário!");
     }
 
     try {
-      let { data } = await api.put(`/loyalty/save-user`, {
+      let { data } = await api.put(`/loyalty/user`, {
         user: {
           ...selectedUser,
           cod_unity: selectedUnities,
@@ -84,11 +84,8 @@ const Users = () => {
 
       setUsers([...newUsers]);
 
-      setTimeout(() => {
-        toggleEditUserModal();
-      }, 500);
-
-      toast.success("Salvo!");
+      toggleEditUserModal();
+      toast.success("Usuário salvo!");
     } catch (error) {
       toast.error("Falha ao salvar usuário!");
     }
@@ -96,11 +93,7 @@ const Users = () => {
 
   async function remove() {
     try {
-      console.log(selectedUser);
-
-      let { data } = await api.delete(
-        `/loyalty/delete-user?_id=${selectedUser?._id}`
-      );
+      let { data } = await api.delete(`/loyalty/user?_id=${selectedUser?._id}`);
 
       data = data?.user;
 
@@ -113,14 +106,19 @@ const Users = () => {
 
       setUsers([...newUsers]);
 
-      setTimeout(() => {
-        toggleRemoveUserModal();
-      }, 1000);
-
-      toast.success("Salvo!");
+      toggleRemoveUserModal();
+      toast.success("Usuário deletado!");
     } catch (error) {
-      toast.error("Falha ao salvar usuário!");
+      toast.error("Falha ao deletar usuário!");
     }
+  }
+
+  function toggleCreateUserModal() {
+    setName("");
+    setUsername("");
+    setEmail("");
+    setUnities([]);
+    setCreateUserModalVisible(!createUserModalVisible);
   }
 
   function toggleEditUserModal() {
@@ -134,9 +132,64 @@ const Users = () => {
     setRemoveUserModal(!removeUserModal);
   }
 
+  async function createUser() {
+    if (name?.trim() === "") {
+      return toast.warn("Preencha o nome do usuário!");
+    }
+
+    if (username?.trim() === "") {
+      return toast.warn("Preencha o usuário!");
+    }
+
+    if (email?.trim() === "") {
+      return toast.warn("Preencha o e-mail usuário!");
+    }
+
+    try {
+      let { data } = await api.post(`/loyalty/user`, {
+        name,
+        username,
+        email,
+        cod_enterprise: enterprise._id,
+        cod_unity: unities,
+      });
+
+      data = data?.user;
+
+      let newUsers = users;
+
+      newUsers[users.findIndex((u) => String(u._id) === String(data._id))] =
+        data;
+
+      setUsers([...newUsers]);
+
+      toggleCreateUserModal();
+      toast.success("Usuário salvo!");
+    } catch (error) {
+      toast.error("Falha ao salvar usuário!");
+    }
+  }
+
   const Row = ({ user }) => {
     return (
       <m.tbody
+        initial={{
+          opacity: 0,
+          x: "-2.5vw",
+        }}
+        animate={{
+          opacity: 1,
+          x: 0,
+        }}
+        exit={{
+          opacity: 0,
+          x: "-2.5vw",
+        }}
+        transition={{
+          ease: "easeOut",
+          duration: 0.4,
+          x: { duration: 0.2 },
+        }}
         style={{
           overflow: "hidden",
           position: "relative",
@@ -163,6 +216,17 @@ const Users = () => {
 
                 return unity;
               })}
+
+              {user?.unities?.length === 0 && (
+                <p
+                  style={{
+                    opacity: 0.35,
+                    fontStyle: "italic",
+                  }}
+                >
+                  Não está em nenhuma loja
+                </p>
+              )}
             </p>
           </td>
           <td className="actions">
@@ -174,6 +238,64 @@ const Users = () => {
     );
   };
 
+  const UsersTable = useMemo(() => {
+    return (
+      <m.div
+        style={{
+          overflow: "scroll",
+          width: "100%",
+          height: "92.75%",
+          paddingRight: "1rem",
+          paddingBottom: "2rem",
+        }}
+      >
+        <table>
+          <thead>
+            <th></th>
+            <th>Nome</th>
+            <th>Lojas</th>
+            <th></th>
+          </thead>
+
+          <AnimatePresence mode="wait">
+            {users?.map((user) => (
+              <Row key={user._id} user={user} />
+            ))}
+
+            {users.length === 0 && (
+              <m.div
+                initial={{
+                  opacity: 0,
+                  x: "2.5vw",
+                }}
+                animate={{
+                  opacity: 1,
+                  x: 0,
+                }}
+                exit={{
+                  opacity: 0,
+                  x: "2.5vw",
+                }}
+                transition={{
+                  ease: "easeOut",
+                  duration: 0.4,
+                  x: { duration: 0.2 },
+                }}
+                style={{
+                  width: "calc(100% - 4rem)",
+                  height: "calc(100% - 13rem)",
+                  position: "absolute",
+                }}
+              >
+                <NoContent />
+              </m.div>
+            )}
+          </AnimatePresence>
+        </table>
+      </m.div>
+    );
+  }, [users]);
+
   return (
     <AnimatedPage>
       <GlobalStyle />
@@ -181,41 +303,87 @@ const Users = () => {
         <Block
           style={{
             height: "100%",
+            overflow: "hidden",
           }}
         >
           <Header>
             <BackIcon throwIfNamespace={false} onClick={goBack} />
             <h1>Usuários</h1>
+            <TiPlus
+              id="createButton"
+              onClick={toggleCreateUserModal}
+              size={32}
+              color={colors.black}
+            />
           </Header>
           <Spacer />
-          <table>
-            <thead>
-              <th></th>
-              <th>Nome</th>
-              <th>Lojas</th>
-              <th></th>
-            </thead>
-
-            <AnimatePresence>
-              {users?.map((user) => (
-                <Row key={user._id} user={user} />
-              ))}
-
-              {users.length === 0 && (
-                <div
-                  style={{
-                    width: "calc(100% - 4rem)",
-                    height: "calc(100% - 13rem)",
-                    position: "absolute",
-                  }}
-                >
-                  <NoContent />
-                </div>
-              )}
-            </AnimatePresence>
-          </table>
+          {UsersTable}
         </Block>
       </Container>
+
+      <Modal
+        to="bottom"
+        isOpen={createUserModalVisible}
+        setIsOpen={setCreateUserModalVisible}
+        shouldCloseOnOverlayClick
+        contentStyle={{
+          width: "70%",
+          maxHeight: "90%",
+          padding: "2rem",
+          overflow: "hidden",
+        }}
+      >
+        <CreateModal>
+          <div className="modalHeader">
+            <p>Criar usuário</p>
+            <CloseIcon onClick={() => setCreateUserModalVisible(false)} />
+          </div>
+
+          <Spacer />
+
+          <div className="modalContent">
+            <div className="left">
+              <p
+                style={{
+                  gridArea: "name",
+                }}
+              >
+                Nome:
+              </p>
+              <p style={{ gridArea: "user" }}>Usuário:</p>
+              <p style={{ gridArea: "email" }}>E-mail:</p>
+
+              <Input
+                style={{ gridArea: "nameInput" }}
+                placeholder="Digite o nome"
+                onChange={(e) => setName(e.target.value)}
+              />
+              <Input
+                style={{ gridArea: "userInput" }}
+                placeholder="Digite o usuário"
+                onChange={(e) => setUsername(e.target.value)}
+              />
+              <Input
+                style={{ gridArea: "emailInput" }}
+                placeholder="Digite o e-mail"
+                type="email"
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+            <Spacer vertical />
+            <div className="right">
+              <StoresList
+                invertAnimation
+                storeWidth={"30%"}
+                stores={enterprise?.unities}
+                selectedUnities={unities}
+                setSelectedUnities={setUnities}
+              />
+            </div>
+          </div>
+          <Button onClick={createUser}>Criar</Button>
+        </CreateModal>
+      </Modal>
 
       <Modal
         isOpen={selectStoresModal}
@@ -253,22 +421,21 @@ const Users = () => {
           </div>
         </div>
         <Spacer />
-        <div className="modalStores">
-          {enterprise?.unities?.map((unity, i) => {
-            return (
-              <div
-                key={unity._id}
-                className="modalStore"
-                onClick={() => selectStore(unity)}
-                style={{
-                  backgroundColor: unity.color,
-                  opacity: selectedUnities.includes(unity._id) ? 1 : 0.5,
-                }}
-              >
-                <p>{unity.name}</p>
-              </div>
-            );
-          })}
+        <div
+          style={{
+            overflowY: "auto",
+            height: "75%",
+            paddingBottom: "1rem",
+          }}
+        >
+          <StoresList
+            invertAnimation
+            storeWidth={"47.5%"}
+            gap={"1rem"}
+            stores={enterprise?.unities}
+            selectedUnities={selectedUnities}
+            setSelectedUnities={setSelectedUnities}
+          />
         </div>
         <div className="modalFooter">
           <Spacer />

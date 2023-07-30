@@ -1,8 +1,9 @@
 import styled from "styled-components";
+import { m } from "framer-motion";
 
 import colors from "../../global/colors";
 
-export const Container = styled.div`
+export const Container = styled(m.div)`
   width: 100%;
 
   display: flex;
@@ -14,10 +15,14 @@ export const Container = styled.div`
 
   transition: 100ms ease;
 
-  &:hover {
-    fill: ${colors.orange};
+  svg {
+    transition: 100ms ease;
 
-    cursor: pointer;
+    &:hover {
+      fill: ${colors.orange};
+
+      cursor: pointer;
+    }
   }
 
   .code {

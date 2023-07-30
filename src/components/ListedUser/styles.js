@@ -1,8 +1,9 @@
 import styled from "styled-components";
+import { m } from "framer-motion";
 
 import colors from "../../global/colors";
 
-export const Container = styled.div`
+export const Container = styled(m.div)`
   width: 100%;
 
   display: flex;

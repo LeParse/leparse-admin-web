@@ -44,7 +44,10 @@ const NavBar = () => {
 
   useEffect(clickPageLink, []);
 
-  if (window.location.pathname.includes("/login")) {
+  if (
+    window.location.pathname.includes("/login") ||
+    window.location.pathname.includes("/create-password")
+  ) {
     return null;
   }
 

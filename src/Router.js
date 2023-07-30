@@ -11,6 +11,7 @@ import { AnimatePresence, LazyMotion, domMax, m } from "framer-motion";
 import NavBar from "./components/NavBar";
 
 import Login from "./pages/Login";
+import ConfirmRegister from "./pages/ConfirmRegister";
 
 //#region Real Time
 import RealTime from "./pages/RealTime/Initial";
@@ -19,6 +20,7 @@ import RealTime from "./pages/RealTime/Initial";
 //#region Loyalty
 import Loyalty from "./pages/Loyalty/Initial";
 import LoyaltyUsers from "./pages/Loyalty/Users";
+import LoyaltyVouchers from "./pages/Loyalty/Vouchers";
 //#endregion
 
 //#region Settings
@@ -77,6 +79,7 @@ const AnimatedRoutes = () => {
           <AnimatePresence mode="wait">
             <Routes location={location} key={location.pathname}>
               <Route path="/login" element={<Login />} />
+              <Route path="/create-password" element={<ConfirmRegister />} />
               <Route path="/app/*">
                 <Route path="real-time">
                   <Route index element={<RealTime />} />
@@ -84,6 +87,7 @@ const AnimatedRoutes = () => {
                 <Route path="loyalty" element={<LoyaltyOutlet />}>
                   <Route index element={<Loyalty />} />
                   <Route path="users" element={<LoyaltyUsers />} />
+                  <Route path="vouchers" element={<LoyaltyVouchers />} />
                 </Route>
                 <Route path="settings" element={<Settings />} />
               </Route>

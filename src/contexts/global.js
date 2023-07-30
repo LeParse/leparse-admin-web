@@ -44,7 +44,8 @@ const GlobalProvider = ({ children }) => {
     if (
       !window.location.pathname.includes("/login") &&
       token === "" &&
-      !localStorage.getItem("$leparse-admin-token")
+      !localStorage.getItem("$leparse-admin-token") &&
+      !window.location.pathname.includes("/create-password")
     ) {
       window.location = "/login?noToken=true";
     }

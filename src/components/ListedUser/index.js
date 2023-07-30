@@ -14,7 +14,26 @@ const ListedUser = ({ name, stores, id }) => {
   }
 
   return (
-    <Container onClick={gotoUser}>
+    <Container
+      initial={{
+        opacity: 0,
+        x: "-2.5vw",
+      }}
+      animate={{
+        opacity: 1,
+        x: 0,
+      }}
+      exit={{
+        opacity: 0,
+        x: "-2.5vw",
+      }}
+      transition={{
+        ease: "easeOut",
+        duration: 0.4,
+        x: { duration: 0.2 },
+      }}
+      onClick={gotoUser}
+    >
       <FaUser
         size={24}
         style={{
