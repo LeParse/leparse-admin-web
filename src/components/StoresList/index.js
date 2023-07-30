@@ -24,15 +24,6 @@ const StoresList = ({
   return (
     <AnimatePresence>
       <Container
-        initial={{
-          opacity: 0,
-          scale: 0,
-        }}
-        animate={{
-          opacity: 1,
-          scale: 1,
-        }}
-        exit={{ opacity: 0, scale: 0 }}
         style={{
           gap,
         }}
@@ -40,6 +31,15 @@ const StoresList = ({
         {stores?.map((store) => (
           <Store
             key={store._id}
+            initial={{
+              opacity: 0,
+              scale: 0,
+            }}
+            animate={{
+              opacity: 1,
+              scale: 1,
+            }}
+            exit={{ opacity: 0, scale: 0 }}
             onClick={() => selectStore(store)}
             style={{
               backgroundColor: store.color,
