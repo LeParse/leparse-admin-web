@@ -60,7 +60,7 @@ const ConfirmRegister = () => {
         window.location.href = "https://loyalty.leparse.tech/login";
       }, 2000);
     } catch (error) {
-      if (error.message === "User already registered!") {
+      if (error.response.data.message === "User already registered!") {
         return toast.warning("Usuário já cadastrado!");
       }
       toast.error(error.message);
