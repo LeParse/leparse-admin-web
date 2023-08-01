@@ -59,28 +59,30 @@ const GlobalProvider = ({ children }) => {
   }
 
   async function getEnterprise() {
-    if (JSON.stringify(user) !== JSON.stringify({})) {
-      try {
-        const { data } = await api.get(
-          `/global/get-enterprise?enterprise_id=${user.cod_enterprise}`
-        );
+    if (!window.location.pathname.includes("/create-password")) {
+      if (JSON.stringify(user) !== JSON.stringify({})) {
+        try {
+          const { data } = await api.get(
+            `/global/get-enterprise?enterprise_id=${user.cod_enterprise}`
+          );
 
-        const { enterprise } = data;
+          const { enterprise } = data;
 
-        setEnterprise(enterprise);
-      } catch (error) {
-        if (error.response) {
-          switch (error.response.status) {
-            case 404:
-              return toast.error("Empresa não encontrada");
-            default:
-              return toast.error(
-                "Erro desconhecido! Tente novamente mais tarde..."
-              );
+          setEnterprise(enterprise);
+        } catch (error) {
+          if (error.response) {
+            switch (error.response.status) {
+              case 404:
+                return toast.error("Empresa não encontrada");
+              default:
+                return toast.error(
+                  "Erro desconhecido! Tente novamente mais tarde..."
+                );
+            }
           }
-        }
 
-        toast.error("Erro desconhecido! Tente novamente mais tarde...");
+          toast.error("Erro desconhecido! Tente novamente mais tarde...");
+        }
       }
     }
   }
