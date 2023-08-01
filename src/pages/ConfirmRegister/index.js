@@ -25,7 +25,7 @@ const ConfirmRegister = () => {
         `/loyalty/get-name-confirm-register?_id=${searchParams.get("_id")}`,
         {
           headers: {
-            authorization: `Bearer ${searchParams.get("_t")}`,
+            Authorization: `Bearer ${searchParams.get("_t")}`,
           },
         }
       );
