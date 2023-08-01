@@ -8,6 +8,8 @@ import { TiPlus } from "react-icons/ti";
 import { useGlobal } from "../../../contexts/global";
 import { useLoyalty } from "../../../contexts/loyalty";
 
+import { useDebounce } from "../../../utils/debounce.utils";
+
 import AnimatedPage from "../../../components/AnimatedPage";
 import Block from "../../../components/Block";
 import Input from "../../../components/Input";
@@ -16,6 +18,7 @@ import Button from "../../../components/Button";
 import Spacer from "../../../components/Spacer";
 import NoContent from "../../../components/NoContent";
 import StoresList from "../../../components/StoresList";
+import SearchBar from "../../../components/SearchBar";
 
 import noUserIcon from "../../../assets/icons/no-user-icon.jpg";
 
@@ -46,6 +49,8 @@ const Users = () => {
   const [unities, setUnities] = useState([]);
 
   const [createUserModalVisible, setCreateUserModalVisible] = useState(false);
+
+  const [searchText, setSearchText] = useDebounce("");
 
   function goBack() {
     navigate(-1);
@@ -156,12 +161,7 @@ const Users = () => {
 
       data = data?.user;
 
-      let newUsers = users;
-
-      newUsers[users.findIndex((u) => String(u._id) === String(data._id))] =
-        data;
-
-      setUsers([...newUsers]);
+      setUsers([...users, data]);
 
       toggleCreateUserModal();
       toast.success("Usuário salvo!");
@@ -173,6 +173,7 @@ const Users = () => {
   const Row = ({ user }) => {
     return (
       <m.tbody
+        layout
         initial={{
           opacity: 0,
           x: "-2.5vw",
@@ -189,6 +190,9 @@ const Users = () => {
           ease: "easeOut",
           duration: 0.4,
           x: { duration: 0.2 },
+          layout: {
+            duration: 0.2,
+          },
         }}
         style={{
           overflow: "hidden",
@@ -257,12 +261,24 @@ const Users = () => {
             <th></th>
           </thead>
 
-          <AnimatePresence mode="wait">
-            {users?.map((user) => (
-              <Row key={user._id} user={user} />
-            ))}
+          <AnimatePresence>
+            {users?.map((user) => {
+              return (
+                user.name
+                  .toLowerCase()
+                  .replace(" ", "")
+                  .includes(
+                    searchText?.replace(" ", "").toLocaleLowerCase()
+                  ) && <Row key={user._id} user={user} />
+              );
+            })}
 
-            {users.length === 0 && (
+            {users?.filter((u) =>
+              u.name
+                .toLowerCase()
+                .replace(" ", "")
+                .includes(searchText?.replace(" ", "").toLocaleLowerCase())
+            ).length === 0 && (
               <m.div
                 initial={{
                   opacity: 0,
@@ -280,12 +296,16 @@ const Users = () => {
                   ease: "easeOut",
                   duration: 0.4,
                   x: { duration: 0.2 },
+                  layout: {
+                    duration: 0.2,
+                  },
                 }}
                 style={{
                   width: "calc(100% - 4rem)",
                   height: "calc(100% - 13rem)",
                   position: "absolute",
                 }}
+                layout
               >
                 <NoContent />
               </m.div>
@@ -294,7 +314,7 @@ const Users = () => {
         </table>
       </m.div>
     );
-  }, [users]);
+  }, [users, searchText]);
 
   return (
     <AnimatedPage>
@@ -309,6 +329,16 @@ const Users = () => {
           <Header>
             <BackIcon throwIfNamespace={false} onClick={goBack} />
             <h1>Usuários</h1>
+            <SearchBar
+              onChange={(e) => {
+                console.log(e.target.value);
+                setSearchText(e.target.value);
+              }}
+              style={{
+                position: "absolute",
+                right: "6rem",
+              }}
+            />
             <TiPlus
               id="createButton"
               onClick={toggleCreateUserModal}

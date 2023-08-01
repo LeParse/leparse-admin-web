@@ -153,6 +153,7 @@ export const Container = styled.div`
       table {
         width: 100%;
         border-collapse: separate;
+        table-layout: fixed;
 
         th,
         td {
@@ -366,16 +367,19 @@ export const Header = styled.div`
   }
 
   svg {
-    width: 2rem;
-    height: 2rem;
-    fill: ${colors.black};
+    &:nth-child(1),
+    &:nth-child(4) {
+      width: 2rem;
+      height: 2rem;
+      fill: ${colors.black};
 
-    cursor: pointer;
-    transition: 100ms ease;
+      cursor: pointer;
+      transition: 100ms ease;
 
-    padding: 0.5rem;
+      padding: 0.5rem;
+    }
 
-    &:nth-child(3) {
+    &:nth-child(4) {
       position: absolute;
       right: 1rem;
       padding: 1rem;
@@ -387,7 +391,7 @@ export const Header = styled.div`
         fill: ${colors.primary};
       }
 
-      &:nth-child(3) {
+      &:nth-child(4) {
         transform: translateY(-0.25rem) scale(1.05);
         fill: ${colors.green};
       }

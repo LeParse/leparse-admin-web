@@ -181,6 +181,10 @@ export const Title = styled.div`
   grid-area: title;
   padding: 2rem 2rem;
 
+  img {
+    height: 6rem;
+  }
+
   p {
     font-family: Raleway;
     font-size: 3rem;

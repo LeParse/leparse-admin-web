@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { m } from "framer-motion";
 
 import colors from "../../global/colors";
 
@@ -11,7 +10,7 @@ export const Container = styled.div`
   gap: 1rem;
 `;
 
-export const Store = styled(m.div)`
+export const Store = styled.div`
   width: 12rem;
   height: 6rem;
   border-radius: 1rem;

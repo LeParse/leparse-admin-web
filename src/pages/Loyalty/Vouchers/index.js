@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { AnimatePresence, m } from "framer-motion";
 import { toast } from "react-toastify";
 import { TiPlus } from "react-icons/ti";
+
+import { useDebounce } from "../../../utils/debounce.utils";
 
 import { useLoyalty } from "../../../contexts/loyalty";
 
@@ -13,6 +15,7 @@ import NoContent from "../../../components/NoContent";
 import Input from "../../../components/Input";
 import Button from "../../../components/Button";
 import Modal from "../../../components/Modal";
+import SearchBar from "../../../components/SearchBar";
 
 import { ReactComponent as BackIcon } from "../../../assets/svg/back-icon.svg";
 import { ReactComponent as EditIcon } from "../../../assets/svg/edit-icon.svg";
@@ -48,6 +51,8 @@ const Vouchers = () => {
     useState(false);
   const [massiveCreationAmount, setMassiveCreationAmount] = useState("");
   const [massiveCreationValue, setMassiveCreationValue] = useState("");
+
+  const [searchText, setSearchText] = useDebounce("");
 
   function goBack() {
     navigate(-1);
@@ -183,6 +188,9 @@ const Vouchers = () => {
           ease: "easeOut",
           duration: 0.4,
           x: { duration: 0.2 },
+          layout: {
+            duration: 0.2,
+          },
         }}
         style={{
           overflow: "hidden",
@@ -218,6 +226,89 @@ const Vouchers = () => {
     );
   };
 
+  const VouchersTable = useMemo(
+    () => (
+      <table>
+        <thead>
+          <th>Voucher</th>
+          <th>Valor</th>
+          <th>Data de modificação</th>
+          <th>Data de criação</th>
+          <th></th>
+        </thead>
+
+        <AnimatePresence mode="wait">
+          {vouchers
+            ?.sort((a, b) =>
+              new Date(a.updatedAt) < new Date(b.updatedAt) ? 1 : -1
+            )
+            ?.map((voucher) => {
+              return (
+                voucher.voucher
+                  .toLowerCase()
+                  .replace(" ", "")
+                  .includes(
+                    searchText?.replace(" ", "").toLocaleLowerCase()
+                  ) && <Row key={voucher._id} voucher={voucher} />
+              );
+            })}
+
+          {vouchers?.filter((v) =>
+            v.voucher
+              .toLowerCase()
+              .replace(" ", "")
+              .includes(searchText?.replace(" ", "").toLocaleLowerCase())
+          ).length === 0 && (
+            <m.div
+              initial={{
+                opacity: 0,
+                x: "2.5vw",
+              }}
+              animate={{
+                opacity: 1,
+                x: 0,
+              }}
+              exit={{
+                opacity: 0,
+                x: "2.5vw",
+              }}
+              transition={{
+                ease: "easeOut",
+                duration: 0.4,
+                x: { duration: 0.2 },
+              }}
+              style={{
+                width: "calc(100% - 4rem)",
+                height: "calc(100% - 13rem)",
+                position: "absolute",
+              }}
+            >
+              <NoContent
+                style={{
+                  position: "absolute",
+                  left: "1rem",
+                  top: 0,
+                  width: "unset",
+                  padding: "1rem",
+
+                  p: {
+                    fontSize: "1.5rem",
+                  },
+
+                  svg: {
+                    width: "2.1rem",
+                    height: "2.1rem",
+                  },
+                }}
+              />
+            </m.div>
+          )}
+        </AnimatePresence>
+      </table>
+    ),
+    [vouchers, searchText]
+  );
+
   return (
     <AnimatedPage>
       <GlobalStyle />
@@ -226,6 +317,7 @@ const Vouchers = () => {
         <Block
           style={{
             height: "100%",
+            overflow: "hidden",
             position: "relative",
             paddingBottom: "2.5rem",
           }}
@@ -233,6 +325,13 @@ const Vouchers = () => {
           <Header>
             <BackIcon throwIfNamespace={false} onClick={goBack} />
             <h1>Vouchers</h1>
+            <SearchBar
+              style={{
+                position: "absolute",
+                right: "6rem",
+              }}
+              onChange={(e) => setSearchText(e.target.value)}
+            />
             <TiPlus
               onClick={() => setCreateVoucherModalVisible(true)}
               size={32}
@@ -241,73 +340,7 @@ const Vouchers = () => {
           </Header>
           <Spacer />
           <div className="content">
-            <div className="leftContent">
-              <table>
-                <thead>
-                  <th>Voucher</th>
-                  <th>Valor</th>
-                  <th>Data de modificação</th>
-                  <th>Data de criação</th>
-                  <th></th>
-                </thead>
-
-                <AnimatePresence mode="wait">
-                  {vouchers
-                    ?.sort((a, b) =>
-                      new Date(a.updatedAt) < new Date(b.updatedAt) ? 1 : -1
-                    )
-                    ?.map((voucher) => (
-                      <Row key={voucher._id} voucher={voucher} />
-                    ))}
-
-                  {vouchers.length === 0 && (
-                    <m.div
-                      initial={{
-                        opacity: 0,
-                        x: "2.5vw",
-                      }}
-                      animate={{
-                        opacity: 1,
-                        x: 0,
-                      }}
-                      exit={{
-                        opacity: 0,
-                        x: "2.5vw",
-                      }}
-                      transition={{
-                        ease: "easeOut",
-                        duration: 0.4,
-                        x: { duration: 0.2 },
-                      }}
-                      style={{
-                        width: "calc(100% - 4rem)",
-                        height: "calc(100% - 13rem)",
-                        position: "absolute",
-                      }}
-                    >
-                      <NoContent
-                        style={{
-                          position: "absolute",
-                          left: "1rem",
-                          top: 0,
-                          width: "unset",
-                          padding: "1rem",
-
-                          p: {
-                            fontSize: "1.5rem",
-                          },
-
-                          svg: {
-                            width: "2.1rem",
-                            height: "2.1rem",
-                          },
-                        }}
-                      />
-                    </m.div>
-                  )}
-                </AnimatePresence>
-              </table>
-            </div>
+            <div className="leftContent">{VouchersTable}</div>
             <Spacer vertical />
             <div className="rightContent">
               <p className="title">Criação em massa</p>

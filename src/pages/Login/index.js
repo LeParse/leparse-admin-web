@@ -111,6 +111,16 @@ const Login = () => {
       toast.warn("Seu acesso expirou! Por favor faça o login novamente.");
       initialLoading.current = false;
     }
+
+    console.log(document.querySelectorAll("input"));
+
+    if (document.querySelectorAll("input")[0].value !== "") {
+      focusInput("username");
+    }
+
+    if (document.querySelectorAll("input")[1].value !== "") {
+      focusInput("password");
+    }
   }, []);
 
   return (

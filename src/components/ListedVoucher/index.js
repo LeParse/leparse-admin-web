@@ -15,6 +15,7 @@ const ListedVoucher = ({ code, value, updatedAt, onEditClick }) => {
 
   return (
     <Container
+      layout
       initial={{
         opacity: 0,
         x: "-2.5vw",
@@ -31,6 +32,9 @@ const ListedVoucher = ({ code, value, updatedAt, onEditClick }) => {
         ease: "easeOut",
         duration: 0.4,
         x: { duration: 0.2 },
+        layout: {
+          duration: 0.2,
+        },
       }}
     >
       <FaTicketSimple

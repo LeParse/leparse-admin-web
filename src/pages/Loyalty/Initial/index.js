@@ -18,6 +18,7 @@ import Button from "../../../components/Button";
 import StoresList from "../../../components/StoresList";
 
 import { ReactComponent as CloseIcon } from "../../../assets/svg/close-icon.svg";
+import loyaltyLogo from "../../../assets/images/Logo-white-2.png";
 
 import { SlArrowRight } from "react-icons/sl";
 import { TiPlus } from "react-icons/ti";
@@ -137,12 +138,7 @@ const Loyalty = () => {
 
       data = data?.user;
 
-      let newUsers = users;
-
-      newUsers[users.findIndex((u) => String(u._id) === String(data._id))] =
-        data;
-
-      setUsers([...newUsers]);
+      setUsers([...users, data]);
 
       toggleCreateUserModal();
       toast.success("Usuário salvo!");
@@ -163,7 +159,7 @@ const Loyalty = () => {
     <AnimatedPage>
       <Container>
         <Title>
-          <p>Loyalty</p>
+          <img src={loyaltyLogo} alt="Loyalty" />
         </Title>
 
         <Block

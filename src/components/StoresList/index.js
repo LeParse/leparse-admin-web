@@ -1,5 +1,3 @@
-import { AnimatePresence } from "framer-motion";
-
 import { Container, Store } from "./styles";
 
 const StoresList = ({
@@ -22,37 +20,26 @@ const StoresList = ({
   }
 
   return (
-    <AnimatePresence>
-      <Container
-        style={{
-          gap,
-        }}
-      >
-        {stores?.map((store) => (
-          <Store
-            key={store._id}
-            initial={{
-              opacity: 0,
-              scale: 0,
-            }}
-            animate={{
-              opacity: 1,
-              scale: 1,
-            }}
-            exit={{ opacity: 0, scale: 0 }}
-            onClick={() => selectStore(store)}
-            style={{
-              backgroundColor: store.color,
-              opacity: selectedUnities.includes(store._id) ? 1 : 0.5,
-              width: storeWidth,
-            }}
-            invertAnimation={invertAnimation}
-          >
-            <p>{store?.name}</p>
-          </Store>
-        ))}
-      </Container>
-    </AnimatePresence>
+    <Container
+      style={{
+        gap,
+      }}
+    >
+      {stores?.map((store) => (
+        <Store
+          key={store._id}
+          onClick={() => selectStore(store)}
+          style={{
+            backgroundColor: store.color,
+            opacity: selectedUnities.includes(store._id) ? 1 : 0.5,
+            width: storeWidth,
+          }}
+          invertAnimation={invertAnimation}
+        >
+          <p>{store?.name}</p>
+        </Store>
+      ))}
+    </Container>
   );
 };
 

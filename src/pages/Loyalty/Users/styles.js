@@ -126,6 +126,7 @@ export const Container = styled.div`
   table {
     width: 100%;
 
+    /* table-layout: fixed; */
     border-collapse: separate;
 
     th,
@@ -279,7 +280,8 @@ export const Header = styled.div`
     color: ${colors.black};
   }
 
-  svg {
+  svg:nth-child(1),
+  svg:nth-child(4) {
     width: 2rem;
     height: 2rem;
     fill: ${colors.black};
