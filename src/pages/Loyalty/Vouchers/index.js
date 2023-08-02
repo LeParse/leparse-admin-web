@@ -202,7 +202,7 @@ const Vouchers = () => {
           <td>
             <p
               style={{
-                backgroundColor: voucher.active ? colors.green : colors.red,
+                color: voucher.active ? colors.green : colors.red,
               }}
             >
               {voucher.voucher}

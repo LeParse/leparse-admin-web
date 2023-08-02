@@ -46,7 +46,7 @@ const ListedVoucher = ({ code, value, updatedAt, active, onEditClick }) => {
       <p
         className="code"
         style={{
-          backgroundColor: active ? colors.green : colors.red,
+          color: active ? colors.green : colors.red,
         }}
       >
         {code}
