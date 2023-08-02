@@ -255,6 +255,7 @@ const Loyalty = () => {
                     code={voucher.voucher}
                     value={voucher.value}
                     updatedAt={voucher.updatedAt}
+                    active={voucher?.active}
                     onEditClick={() => {
                       setVoucherValue(String(voucher?.value).replace(".", ","));
                       setActualVoucher(voucher);

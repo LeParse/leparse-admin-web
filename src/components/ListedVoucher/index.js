@@ -5,7 +5,7 @@ import { ReactComponent as EditIcon } from "../../assets/svg/edit-icon.svg";
 import colors from "../../global/colors";
 import { Container } from "./styles";
 
-const ListedVoucher = ({ code, value, updatedAt, onEditClick }) => {
+const ListedVoucher = ({ code, value, updatedAt, active, onEditClick }) => {
   function currencyFormat(num = 200) {
     return Number(num)
       ?.toFixed(2)
@@ -43,7 +43,14 @@ const ListedVoucher = ({ code, value, updatedAt, onEditClick }) => {
         }}
         size={24}
       />
-      <p className="code">{code}</p>
+      <p
+        className="code"
+        style={{
+          backgroundColor: active ? colors.green : colors.red,
+        }}
+      >
+        {code}
+      </p>
       <p className="value">R$ {currencyFormat(value)}</p>
       <p className="value">
         {new Date(updatedAt).toLocaleDateString()}{" "}

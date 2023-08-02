@@ -200,7 +200,13 @@ const Vouchers = () => {
       >
         <tr>
           <td>
-            <p>{voucher.voucher}</p>
+            <p
+              style={{
+                backgroundColor: voucher.active ? colors.green : colors.red,
+              }}
+            >
+              {voucher.voucher}
+            </p>
           </td>
           <td>
             <p>{currencyFormat(voucher.value)}</p>
