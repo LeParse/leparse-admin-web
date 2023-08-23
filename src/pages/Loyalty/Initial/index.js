@@ -73,7 +73,7 @@ const Loyalty = () => {
         return toast.warn("Insira o valor do voucher!");
       }
 
-      const { data } = await api.post("/loyalty/create-voucher", {
+      const { data } = await api.post("/loyalty/voucher", {
         value: voucherValue,
       });
 
@@ -298,16 +298,16 @@ const Loyalty = () => {
 
         <Block
           style={{
-            gridArea: "tuitions",
+            gridArea: "enterprises",
             width: "100%",
             height: "100%",
           }}
         >
-          <p className="blockTitle">Mensalidades</p>
+          <p className="blockTitle">Empresas</p>
 
           <Spacer />
 
-          <div className="tuitions">
+          <div className="enterprises">
             <p>Você possui 2 mensalidades pendentes!</p>
             <p>Pague e evite o congelamento</p>
           </div>
@@ -318,7 +318,7 @@ const Loyalty = () => {
             <SlArrowRight color={colors.black} size={18} />
           </div>
 
-          <div
+          {/* <div
             style={{
               position: "absolute",
               top: 0,
@@ -344,7 +344,7 @@ const Loyalty = () => {
             >
               Em breve...
             </p>
-          </div>
+          </div> */}
         </Block>
       </Container>
 

@@ -16,13 +16,14 @@ export const Container = styled.div`
   padding: 1rem;
 
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: repeat(3, 1fr);
+  grid-template-rows: repeat(5, 1fr);
 
   grid-template-areas:
     "title title"
-    "users vouchers"
-    "users vouchers"
-    "users tuitions";
+    "vouchers users"
+    "vouchers users"
+    "vouchers enterprises"
+    "vouchers enterprises";
 
   .blockTitleContainer {
     display: flex;
@@ -53,7 +54,7 @@ export const Container = styled.div`
 
   .usersList {
     width: 100%;
-    height: 70%;
+    height: 40%;
 
     display: flex;
     flex-direction: column;
@@ -69,7 +70,7 @@ export const Container = styled.div`
     -webkit-mask-image: linear-gradient(
       180deg,
       rgba(0, 0, 0, 0) 0%,
-      rgba(0, 0, 0, 1) 7.5% 92.5%,
+      rgba(0, 0, 0, 1) 5% 95%,
       rgba(0, 0, 0, 0) 100%
     );
     -webkit-mask-position: center;
@@ -77,7 +78,7 @@ export const Container = styled.div`
     mask-image: linear-gradient(
       180deg,
       rgba(0, 0, 0, 0) 0%,
-      rgba(0, 0, 0, 1) 7.5% 92.5%,
+      rgba(0, 0, 0, 1) 5% 95%,
       rgba(0, 0, 0, 0) 100%
     );
     mask-position: center;
@@ -85,7 +86,7 @@ export const Container = styled.div`
 
   .vouchersList {
     width: 100%;
-    height: 45%;
+    height: 75%;
 
     display: flex;
     flex-direction: column;
@@ -102,7 +103,7 @@ export const Container = styled.div`
     -webkit-mask-image: linear-gradient(
       180deg,
       rgba(0, 0, 0, 0) 0%,
-      rgba(0, 0, 0, 1) 7.5% 92.5%,
+      rgba(0, 0, 0, 1) 5% 95%,
       rgba(0, 0, 0, 0) 100%
     );
     -webkit-mask-position: center;
@@ -110,13 +111,13 @@ export const Container = styled.div`
     mask-image: linear-gradient(
       180deg,
       rgba(0, 0, 0, 0) 0%,
-      rgba(0, 0, 0, 1) 7.5% 92.5%,
+      rgba(0, 0, 0, 1) 5% 95%,
       rgba(0, 0, 0, 0) 100%
     );
     mask-position: center;
   }
 
-  .tuitions {
+  .enterprises {
     p {
       color: ${colors.black};
       font-family: Raleway;
@@ -143,7 +144,7 @@ export const Container = styled.div`
 
     background-color: #fff;
     width: 100%;
-    height: 5rem;
+    height: 4rem;
     left: 0;
     bottom: 0;
 
@@ -179,17 +180,10 @@ export const Container = styled.div`
 
 export const Title = styled.div`
   grid-area: title;
-  padding: 2rem 2rem;
+  padding: 2rem 0 1rem 0;
 
   img {
-    height: 6rem;
-  }
-
-  p {
-    font-family: Raleway;
-    font-size: 3rem;
-    font-weight: 300;
-    color: ${colors.white};
+    height: 4rem;
   }
 `;
 
