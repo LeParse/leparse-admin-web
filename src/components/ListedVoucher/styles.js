@@ -16,6 +16,7 @@ export const Container = styled(m.div)`
   transition: 100ms ease;
 
   svg {
+    width: 1.25rem;
     transition: 100ms ease;
 
     &:hover {
@@ -38,10 +39,23 @@ export const Container = styled(m.div)`
     text-overflow: ellipsis;
     transition: 100ms ease;
 
-    min-width: 12rem;
-    width: 100%;
+    width: 7rem;
+  }
 
-    flex-basis: calc(86% / 3);
+  .enterprise {
+    color: ${colors.black};
+    font-size: 1rem;
+    font-family: Raleway;
+    font-style: normal;
+    font-weight: 300;
+    line-height: normal;
+    align-self: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: 100ms ease;
+
+    width: 5rem;
   }
 
   .value {
@@ -56,10 +70,5 @@ export const Container = styled(m.div)`
     overflow: hidden;
     text-overflow: ellipsis;
     transition: 100ms ease;
-
-    min-width: 7rem;
-    width: 100%;
-
-    flex-basis: calc(86% / 1.5);
   }
 `;

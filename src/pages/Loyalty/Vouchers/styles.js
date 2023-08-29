@@ -147,7 +147,7 @@ export const Container = styled.div`
     }
 
     .leftContent {
-      width: 55%;
+      width: 77.5%;
       overflow-x: hidden;
 
       table {
@@ -206,7 +206,15 @@ export const Container = styled.div`
           vertical-align: middle;
 
           p {
-            text-align: center;
+            width: 110%;
+            text-align: left;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+
+          .datetime {
+            white-space: wrap;
           }
 
           img {
@@ -220,10 +228,16 @@ export const Container = styled.div`
     }
 
     .rightContent {
-      width: 45%;
+      width: 32.5%;
       .title {
         font-size: 2rem;
         font-weight: 700;
+        color: ${colors.black};
+        margin-bottom: 2rem;
+      }
+
+      .cooming_soon {
+        font-weight: 300;
         color: ${colors.black};
         margin-bottom: 2rem;
       }
@@ -437,7 +451,7 @@ export const CreateModal = styled.div`
 
   .modalContent {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
     justify-content: space-between;
 
@@ -447,9 +461,24 @@ export const CreateModal = styled.div`
       font-weight: 400;
     }
 
-    input {
-      width: 6rem;
-      text-align: right;
+    .inputs {
+      display: flex;
+      gap: 2rem;
+
+      .input {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+
+        input:nth-child(2) {
+          width: 5rem;
+        }
+
+        input:nth-child(1) {
+          width: 4rem;
+        }
+      }
     }
 
     .value {
@@ -463,12 +492,13 @@ export const CreateModal = styled.div`
   }
 
   button {
-    width: 100%;
-    margin-top: 2rem;
+    width: 10rem;
 
     background-color: ${colors.green};
 
-    align-self: center;
+    position: absolute;
+    bottom: 2rem;
+    right: 2rem;
   }
 `;
 

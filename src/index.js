@@ -24,7 +24,7 @@ root.render(
       draggable
       pauseOnHover
       theme="colored"
-      limit={1}
+      limit={3}
     />
   </React.StrictMode>
 );

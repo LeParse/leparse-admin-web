@@ -21,6 +21,7 @@ import RealTime from "./pages/RealTime/Initial";
 import Loyalty from "./pages/Loyalty/Initial";
 import LoyaltyUsers from "./pages/Loyalty/Users";
 import LoyaltyVouchers from "./pages/Loyalty/Vouchers";
+import LoyaltyEnterprises from "./pages/Loyalty/Enterprises";
 //#endregion
 
 //#region Settings
@@ -79,7 +80,10 @@ const AnimatedRoutes = () => {
           <AnimatePresence mode="wait">
             <Routes location={location} key={location.pathname}>
               <Route path="/login" element={<Login />} />
-              <Route path="/create-password" element={<ConfirmRegister />} />
+              <Route
+                path="/loyalty/create-password"
+                element={<ConfirmRegister />}
+              />
               <Route path="/app/*">
                 <Route path="real-time">
                   <Route index element={<RealTime />} />
@@ -88,6 +92,7 @@ const AnimatedRoutes = () => {
                   <Route index element={<Loyalty />} />
                   <Route path="users" element={<LoyaltyUsers />} />
                   <Route path="vouchers" element={<LoyaltyVouchers />} />
+                  <Route path="enterprises" element={<LoyaltyEnterprises />} />
                 </Route>
                 <Route path="settings" element={<Settings />} />
               </Route>
