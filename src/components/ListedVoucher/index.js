@@ -1,11 +1,21 @@
 import { FaTicketSimple } from "react-icons/fa6";
 
 import { ReactComponent as EditIcon } from "../../assets/svg/edit-icon.svg";
+import { useLoyalty } from "../../contexts/loyalty";
 
 import colors from "../../global/colors";
 import { Container } from "./styles";
 
-const ListedVoucher = ({ code, value, updatedAt, active, onEditClick }) => {
+const ListedVoucher = ({
+  enterprise_id,
+  code,
+  value,
+  updatedAt,
+  active,
+  onEditClick,
+}) => {
+  const { enterprises } = useLoyalty();
+
   function currencyFormat(num = 200) {
     return Number(num)
       ?.toFixed(2)
@@ -37,12 +47,7 @@ const ListedVoucher = ({ code, value, updatedAt, active, onEditClick }) => {
         },
       }}
     >
-      <FaTicketSimple
-        style={{
-          flexBasis: "7%",
-        }}
-        size={24}
-      />
+      <FaTicketSimple size={24} />
       <p
         className="code"
         style={{
@@ -51,19 +56,15 @@ const ListedVoucher = ({ code, value, updatedAt, active, onEditClick }) => {
       >
         {code}
       </p>
+      <p className="enterprise">
+        {enterprises.find((ent) => ent._id === enterprise_id)?.name}
+      </p>
       <p className="value">R$ {currencyFormat(value)}</p>
       <p className="value">
         {new Date(updatedAt).toLocaleDateString()}{" "}
         {new Date(updatedAt).toLocaleTimeString()}
       </p>
-      <EditIcon
-        size={16}
-        color={colors.black}
-        onClick={onEditClick}
-        style={{
-          flexBasis: "7%",
-        }}
-      />
+      <EditIcon color={colors.black} onClick={onEditClick} />
     </Container>
   );
 };

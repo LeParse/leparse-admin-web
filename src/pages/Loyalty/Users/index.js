@@ -35,7 +35,7 @@ import { Container, Header, GlobalStyle, CreateModal } from "./styles";
 const Users = () => {
   const navigate = useNavigate();
   const { enterprise } = useGlobal();
-  const { users, setUsers } = useLoyalty();
+  const { users, createUser, editUser, deleteUser } = useLoyalty();
 
   const [removeUserModal, setRemoveUserModal] = useState(false);
   const [selectStoresModal, setSelectStoresModal] = useState(false);
@@ -67,55 +67,37 @@ const Users = () => {
     setRemoveUserModal(true);
   }
 
-  async function edit() {
-    if (selectedUser?.name?.trim() === "") {
-      return toast.warn("Preencha o nome do usuário!");
-    }
-
-    try {
-      let { data } = await api.put(`/loyalty/user`, {
-        user: {
-          ...selectedUser,
-          cod_unity: selectedUnities,
-        },
+  function runCreateUser() {
+    createUser(name, username, email, unities)
+      .then(() => {
+        toggleCreateUserModal();
+        toast.success("Usuário salvo!");
+      })
+      .catch((err) => {
+        toast.error("Falha ao salvar usuário!");
       });
-
-      data = data?.user;
-
-      let newUsers = users;
-
-      newUsers[users.findIndex((u) => String(u._id) === String(data._id))] =
-        data;
-
-      setUsers([...newUsers]);
-
-      toggleEditUserModal();
-      toast.success("Usuário salvo!");
-    } catch (error) {
-      toast.error("Falha ao salvar usuário!");
-    }
   }
 
-  async function remove() {
-    try {
-      let { data } = await api.delete(`/loyalty/user?_id=${selectedUser?._id}`);
+  function runEditUser() {
+    editUser(selectedUser, selectedUnities)
+      .then(() => {
+        toggleEditUserModal();
+        toast.success("Usuário salvo!");
+      })
+      .catch((err) => {
+        toast.error("Falha ao salvar usuário!");
+      });
+  }
 
-      data = data?.user;
-
-      let newUsers = users;
-
-      newUsers.splice(
-        users.findIndex((u) => String(u._id) === String(data._id)),
-        1
-      );
-
-      setUsers([...newUsers]);
-
-      toggleRemoveUserModal();
-      toast.success("Usuário deletado!");
-    } catch (error) {
-      toast.error("Falha ao deletar usuário!");
-    }
+  function runDeleteUser() {
+    deleteUser(selectedUser?._id)
+      .then(() => {
+        toggleRemoveUserModal();
+        toast.success("Usuário deletado!");
+      })
+      .catch((err) => {
+        toast.error("Falha ao deletar usuário!");
+      });
   }
 
   function toggleCreateUserModal() {
@@ -135,39 +117,6 @@ const Users = () => {
   function toggleRemoveUserModal() {
     setSelectedUser({});
     setRemoveUserModal(!removeUserModal);
-  }
-
-  async function createUser() {
-    if (name?.trim() === "") {
-      return toast.warn("Preencha o nome do usuário!");
-    }
-
-    if (username?.trim() === "") {
-      return toast.warn("Preencha o usuário!");
-    }
-
-    if (email?.trim() === "") {
-      return toast.warn("Preencha o e-mail usuário!");
-    }
-
-    try {
-      let { data } = await api.post(`/loyalty/user`, {
-        name,
-        username,
-        email,
-        cod_enterprise: enterprise._id,
-        cod_unity: unities,
-      });
-
-      data = data?.user;
-
-      setUsers([...users, data]);
-
-      toggleCreateUserModal();
-      toast.success("Usuário salvo!");
-    } catch (error) {
-      toast.error("Falha ao salvar usuário!");
-    }
   }
 
   const Row = ({ user }) => {
@@ -411,7 +360,7 @@ const Users = () => {
               />
             </div>
           </div>
-          <Button onClick={createUser}>Criar</Button>
+          <Button onClick={runCreateUser}>Criar</Button>
         </CreateModal>
       </Modal>
 
@@ -470,7 +419,7 @@ const Users = () => {
         <div className="modalFooter">
           <Spacer />
           <Button
-            onClick={edit}
+            onClick={runEditUser}
             style={{ width: "100%", backgroundColor: colors.orange }}
           >
             Salvar
@@ -512,7 +461,7 @@ const Users = () => {
           }}
         >
           <Button
-            onClick={remove}
+            onClick={runDeleteUser}
             style={{ backgroundColor: colors.red, width: "100%" }}
           >
             Remover

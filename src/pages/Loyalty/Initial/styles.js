@@ -16,13 +16,14 @@ export const Container = styled.div`
   padding: 1rem;
 
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: repeat(3, 1fr);
+  grid-template-rows: repeat(5, 1fr);
 
   grid-template-areas:
     "title title"
-    "users vouchers"
-    "users vouchers"
-    "users tuitions";
+    "vouchers users"
+    "vouchers users"
+    "vouchers enterprises"
+    "vouchers enterprises";
 
   .blockTitleContainer {
     display: flex;
@@ -53,7 +54,7 @@ export const Container = styled.div`
 
   .usersList {
     width: 100%;
-    height: 70%;
+    height: 40%;
 
     display: flex;
     flex-direction: column;
@@ -69,7 +70,7 @@ export const Container = styled.div`
     -webkit-mask-image: linear-gradient(
       180deg,
       rgba(0, 0, 0, 0) 0%,
-      rgba(0, 0, 0, 1) 7.5% 92.5%,
+      rgba(0, 0, 0, 1) 5% 95%,
       rgba(0, 0, 0, 0) 100%
     );
     -webkit-mask-position: center;
@@ -77,7 +78,7 @@ export const Container = styled.div`
     mask-image: linear-gradient(
       180deg,
       rgba(0, 0, 0, 0) 0%,
-      rgba(0, 0, 0, 1) 7.5% 92.5%,
+      rgba(0, 0, 0, 1) 5% 95%,
       rgba(0, 0, 0, 0) 100%
     );
     mask-position: center;
@@ -85,7 +86,7 @@ export const Container = styled.div`
 
   .vouchersList {
     width: 100%;
-    height: 45%;
+    height: 75%;
 
     display: flex;
     flex-direction: column;
@@ -102,7 +103,7 @@ export const Container = styled.div`
     -webkit-mask-image: linear-gradient(
       180deg,
       rgba(0, 0, 0, 0) 0%,
-      rgba(0, 0, 0, 1) 7.5% 92.5%,
+      rgba(0, 0, 0, 1) 5% 95%,
       rgba(0, 0, 0, 0) 100%
     );
     -webkit-mask-position: center;
@@ -110,31 +111,42 @@ export const Container = styled.div`
     mask-image: linear-gradient(
       180deg,
       rgba(0, 0, 0, 0) 0%,
-      rgba(0, 0, 0, 1) 7.5% 92.5%,
+      rgba(0, 0, 0, 1) 5% 95%,
       rgba(0, 0, 0, 0) 100%
     );
     mask-position: center;
   }
 
-  .tuitions {
-    p {
-      color: ${colors.black};
-      font-family: Raleway;
-      font-style: normal;
-      line-height: normal;
+  .enterprisesList {
+    width: 100%;
+    height: 45%;
 
-      &:nth-child(1) {
-        font-size: 1.5rem;
-        font-weight: 600;
-        margin-bottom: 0.5rem;
-      }
+    display: flex;
+    flex-direction: column;
 
-      &:nth-child(2) {
-        font-size: 1rem;
-        font-weight: 400;
-        opacity: 0.5;
-      }
-    }
+    gap: 1.5rem;
+
+    overflow-y: auto;
+    padding-right: 1rem;
+
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+
+    -webkit-mask-image: linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(0, 0, 0, 1) 5% 95%,
+      rgba(0, 0, 0, 0) 100%
+    );
+    -webkit-mask-position: center;
+
+    mask-image: linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(0, 0, 0, 1) 5% 95%,
+      rgba(0, 0, 0, 0) 100%
+    );
+    mask-position: center;
   }
 
   .seeMore {
@@ -143,7 +155,7 @@ export const Container = styled.div`
 
     background-color: #fff;
     width: 100%;
-    height: 5rem;
+    height: 4rem;
     left: 0;
     bottom: 0;
 
@@ -179,17 +191,10 @@ export const Container = styled.div`
 
 export const Title = styled.div`
   grid-area: title;
-  padding: 2rem 2rem;
+  padding: 2rem 0 1rem 0;
 
   img {
-    height: 6rem;
-  }
-
-  p {
-    font-family: Raleway;
-    font-size: 3rem;
-    font-weight: 300;
-    color: ${colors.white};
+    height: 4rem;
   }
 `;
 
@@ -231,7 +236,7 @@ export const CreateVoucherModal = styled.div`
 
   .modalContent {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
     justify-content: space-between;
 
@@ -241,9 +246,24 @@ export const CreateVoucherModal = styled.div`
       font-weight: 400;
     }
 
-    input {
-      width: 6rem;
-      text-align: right;
+    .inputs {
+      display: flex;
+      gap: 2rem;
+
+      .input {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+
+        input:nth-child(2) {
+          width: 5rem;
+        }
+
+        input:nth-child(1) {
+          width: 4rem;
+        }
+      }
     }
 
     .value {
@@ -257,12 +277,13 @@ export const CreateVoucherModal = styled.div`
   }
 
   button {
-    width: 100%;
-    margin-top: 2rem;
+    width: 10rem;
 
     background-color: ${colors.green};
 
-    align-self: center;
+    position: absolute;
+    bottom: 2rem;
+    right: 2rem;
   }
 `;
 
@@ -482,6 +503,163 @@ export const CreateUserModal = styled.div`
         rgba(0, 0, 0, 0) 100%
       );
       mask-position: center;
+    }
+  }
+
+  button {
+    width: 12%;
+    height: 4rem;
+    margin-top: 2rem;
+
+    background-color: ${colors.green};
+
+    align-self: flex-end;
+  }
+`;
+
+export const CreateEnterpriseModal = styled.div`
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+
+  .modalHeader {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 5rem;
+
+    color: ${colors.black};
+
+    p {
+      font-family: Raleway;
+      font-size: 1.5rem;
+      font-weight: 900;
+    }
+
+    svg {
+      width: 1.25rem;
+      height: 1.25rem;
+
+      cursor: pointer;
+
+      fill: ${colors.black};
+      transition: 100ms ease;
+
+      &:hover {
+        transform: translateY(-0.25rem) scale(1.05);
+        fill: ${colors.red};
+      }
+    }
+  }
+
+  .modalContent {
+    width: 100%;
+    height: 100%;
+
+    display: grid;
+
+    grid-template-columns: 1fr 0.1fr 2fr;
+
+    gap: 1rem;
+
+    overflow: auto;
+
+    .field {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+
+      background-color: red;
+      gap: 2rem;
+
+      p {
+        font-family: Raleway;
+        font-size: 1rem;
+        font-weight: 400;
+      }
+
+      input {
+        width: 6rem;
+        text-align: right;
+      }
+    }
+
+    .left {
+      grid-column-start: 1;
+
+      display: grid;
+      height: 100%;
+
+      grid-template-areas:
+        "name nameInput"
+        "cnpj cnpjInput"
+        "phone phoneInput";
+
+      p,
+      input {
+        align-self: center;
+        font-family: Raleway;
+        color: ${colors.black};
+      }
+
+      p {
+        font-weight: 700;
+        opacity: 0.5;
+        cursor: pointer;
+      }
+
+      input {
+        font-weight: 700;
+      }
+    }
+
+    .right {
+      grid-column-start: 3;
+      height: 100%;
+
+      overflow: auto;
+
+      p,
+      input {
+        align-self: center;
+        font-family: Raleway;
+        color: ${colors.black};
+      }
+
+      p {
+        font-weight: 700;
+        opacity: 0.5;
+        cursor: pointer;
+      }
+
+      input {
+        font-weight: 700;
+      }
+
+      .header {
+        width: "100%";
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 1rem;
+
+        input {
+          width: 6rem;
+        }
+      }
+
+      .addressInputs {
+        width: 100%;
+        height: 70%;
+        display: flex;
+        gap: 1rem;
+        position: relative;
+
+        flex-wrap: wrap;
+      }
     }
   }
 

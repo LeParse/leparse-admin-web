@@ -16,6 +16,7 @@ import Input from "../../../components/Input";
 import Button from "../../../components/Button";
 import Modal from "../../../components/Modal";
 import SearchBar from "../../../components/SearchBar";
+import EnterprisesList from "../../../components/EnterprisesList";
 
 import { ReactComponent as BackIcon } from "../../../assets/svg/back-icon.svg";
 import { ReactComponent as EditIcon } from "../../../assets/svg/edit-icon.svg";
@@ -37,20 +38,28 @@ import {
 const Vouchers = () => {
   const navigate = useNavigate();
 
-  const { vouchers, setVouchers } = useLoyalty();
+  const {
+    enterprises,
+    vouchers,
+    createVoucher,
+    editVoucher,
+    deleteVoucher,
+    massiveCreateVoucher,
+  } = useLoyalty();
 
   const [createVoucherModalVisible, setCreateVoucherModalVisible] =
     useState(false);
   const [editVoucherModalVisible, setEditVoucherModalVisible] = useState(false);
   const [removeVoucherModalVisible, setRemoveVoucherModalVisible] =
     useState(false);
+
   const [voucherValue, setVoucherValue] = useState(0);
+  const [voucherAmount, setVoucherAmount] = useState(0);
+  const [selectedEnterprise, setSelectedEnterprise] = useState("");
   const [actualVoucher, setActualVoucher] = useState({});
 
   const [verifyMassiveCreationModal, setVerifyMassiveCreationModal] =
     useState(false);
-  const [massiveCreationAmount, setMassiveCreationAmount] = useState("");
-  const [massiveCreationValue, setMassiveCreationValue] = useState("");
 
   const [searchText, setSearchText] = useDebounce("");
 
@@ -69,97 +78,49 @@ const Vouchers = () => {
     setRemoveVoucherModalVisible(true);
   }
 
-  async function createVoucher() {
-    try {
-      if (!voucherValue) {
-        return toast.warn("Insira o valor do voucher!");
-      }
-
-      const { data } = await api.post("/loyalty/voucher", {
-        value: voucherValue,
+  function runCreateVoucher() {
+    createVoucher(voucherValue, voucherAmount, selectedEnterprise)
+      .then((vouchers) => {
+        setVoucherValue(0);
+        setCreateVoucherModalVisible(false);
+        toast.success("Voucher criado!");
+      })
+      .catch((err) => {
+        toast.error("Falha ao criar voucher!");
       });
-
-      setVouchers((vouchers) => [...vouchers, data?.voucher]);
-
-      setVoucherValue(0);
-      setCreateVoucherModalVisible(false);
-      toast.success("Voucher criado!");
-    } catch (error) {
-      console.log(error);
-      toast.error("Erro ao criar voucher!");
-    }
   }
 
-  async function saveVoucher() {
-    try {
-      if (!voucherValue) {
-        return toast.warn("Insira o valor do voucher!");
-      }
-
-      const { data } = await api.put("/loyalty/voucher", {
-        voucher: actualVoucher?.voucher,
-        value: voucherValue,
+  function runEditVoucher() {
+    editVoucher(voucherValue, actualVoucher)
+      .then(() => {
+        setEditVoucherModalVisible(false);
+        toast.success("Voucher salvo!");
+      })
+      .catch((err) => {
+        toast.error("Erro ao salvar voucher!");
       });
-
-      setVouchers((vouchers) => {
-        vouchers[vouchers.findIndex((v) => v._id === data?.voucher?._id)] =
-          data?.voucher;
-
-        return [...vouchers];
-      });
-
-      setEditVoucherModalVisible(false);
-
-      toast.success("Voucher salvo!");
-    } catch (error) {
-      console.log(error);
-      toast.error("Erro ao salvar voucher!");
-    }
   }
 
-  async function removeVoucher() {
-    try {
-      let { data } = await api.delete(
-        `/loyalty/voucher?_id=${actualVoucher?._id}`
-      );
-
-      data = data?.voucher;
-
-      let newVouchers = vouchers;
-
-      newVouchers.splice(
-        vouchers.findIndex((u) => String(u._id) === String(data._id)),
-        1
-      );
-
-      setVouchers([...newVouchers]);
-
-      setRemoveVoucherModalVisible(false);
-      toast.success("Voucher deletado!");
-    } catch (error) {
-      console.log(error);
-      toast.error("Erro ao deletar voucher!");
-    }
+  function runDeleteVoucher() {
+    deleteVoucher(actualVoucher)
+      .then(() => {
+        setRemoveVoucherModalVisible(false);
+        toast.success("Voucher deletado!");
+      })
+      .catch((err) => {
+        toast.error("Erro ao deletar voucher!");
+      });
   }
 
-  async function massiveCreation() {
-    try {
-      if (massiveCreationAmount <= 0 || massiveCreationValue <= 0) {
-        return toast.error("Valores inválidos!");
-      }
-
-      const { data } = await api.post("/loyalty/voucher/massive", {
-        amount: massiveCreationAmount,
-        value: massiveCreationValue,
-      });
-
-      const newVouchers = data?.vouchers;
-
-      setVouchers([...vouchers, ...newVouchers]);
-      toast.success("Vouchers criados com sucesso!");
-    } catch (err) {
-      toast.error(err.message);
-    }
+  function runMassiveCreateVoucher() {
+    // massiveCreateVoucher(massiveCreationAmount, massiveCreationValue)
+    //   .then(() => {
+    //     setVerifyMassiveCreationModal(false);
+    //     toast.success("Vouchers criados com sucesso!");
+    //   })
+    //   .catch((err) => {
+    //     toast.error(err.message);
+    //   });
   }
 
   function currencyFormat(num = 200) {
@@ -209,16 +170,24 @@ const Vouchers = () => {
             </p>
           </td>
           <td>
+            <p>
+              {
+                enterprises.find((ent) => ent._id === voucher.enterprise_id)
+                  ?.name
+              }
+            </p>
+          </td>
+          <td>
             <p>{currencyFormat(voucher.value)}</p>
           </td>
           <td>
-            <p>
+            <p className="datetime">
               {new Date(voucher.updatedAt).toLocaleDateString()}{" "}
               {new Date(voucher.updatedAt).toLocaleTimeString()}
             </p>
           </td>
           <td>
-            <p>
+            <p className="datetime">
               {new Date(voucher.createdAt).toLocaleDateString()}{" "}
               {new Date(voucher.createdAt).toLocaleTimeString()}
             </p>
@@ -237,6 +206,7 @@ const Vouchers = () => {
       <table>
         <thead>
           <th>Voucher</th>
+          <th>Empresa</th>
           <th>Valor</th>
           <th>Data de modificação</th>
           <th>Data de criação</th>
@@ -248,23 +218,34 @@ const Vouchers = () => {
             ?.sort((a, b) =>
               new Date(a.updatedAt) < new Date(b.updatedAt) ? 1 : -1
             )
-            ?.map((voucher) => {
+            ?.map((v) => {
               return (
-                voucher.voucher
+                (v.voucher
                   .toLowerCase()
                   .replace(" ", "")
-                  .includes(
-                    searchText?.replace(" ", "").toLocaleLowerCase()
-                  ) && <Row key={voucher._id} voucher={voucher} />
+                  .includes(searchText?.replace(" ", "").toLocaleLowerCase()) ||
+                  enterprises
+                    .find((ent) => ent._id === v.enterprise_id)
+                    ?.name.toLowerCase()
+                    .replace(" ", "")
+                    .includes(
+                      searchText?.replace(" ", "").toLocaleLowerCase()
+                    )) && <Row key={v._id} voucher={v} />
               );
             })}
 
-          {vouchers?.filter((v) =>
-            v.voucher
-              .toLowerCase()
-              .replace(" ", "")
-              .includes(searchText?.replace(" ", "").toLocaleLowerCase())
-          ).length === 0 && (
+          {vouchers?.filter(
+            (v) =>
+              v.voucher
+                .toLowerCase()
+                .replace(" ", "")
+                .includes(searchText?.replace(" ", "").toLocaleLowerCase()) ||
+              enterprises
+                .find((ent) => ent._id === v.enterprise_id)
+                ?.name.toLowerCase()
+                .replace(" ", "")
+                .includes(searchText?.replace(" ", "").toLocaleLowerCase())
+          ).length < 1 && (
             <m.div
               initial={{
                 opacity: 0,
@@ -292,7 +273,7 @@ const Vouchers = () => {
               <NoContent
                 style={{
                   position: "absolute",
-                  left: "1rem",
+                  left: "8rem",
                   top: 0,
                   width: "unset",
                   padding: "1rem",
@@ -349,9 +330,11 @@ const Vouchers = () => {
             <div className="leftContent">{VouchersTable}</div>
             <Spacer vertical />
             <div className="rightContent">
-              <p className="title">Criação em massa</p>
+              <p className="title">Opções</p>
 
-              <div className="options">
+              <p className="cooming_soon">Em breve...</p>
+
+              {/* <div className="options">
                 <div className="option">
                   <p>Quantidade:</p>
                   <Input
@@ -398,7 +381,7 @@ const Vouchers = () => {
                 >
                   Criar
                 </Button>
-              </div>
+              </div> */}
 
               {/* <p className="title">Remoção em massa</p>
 
@@ -435,8 +418,8 @@ const Vouchers = () => {
         setIsOpen={setCreateVoucherModalVisible}
         shouldCloseOnOverlayClick
         contentStyle={{
-          width: "auto",
-          height: "auto",
+          width: "36.5%",
+          height: "90%",
           padding: "2rem",
         }}
       >
@@ -449,23 +432,47 @@ const Vouchers = () => {
           <Spacer />
 
           <div className="modalContent">
-            <p>Valor:</p>
-            <div className="value">
-              <p>R$</p>
-              <Input
-                currency
-                thousandSeparator={"."}
-                decimalSeparator={","}
-                decimalScale={2}
-                fixedDecimalScale
-                placeholder="0,00"
-                withBorder
-                value={voucherValue}
-                onChange={(e) => setVoucherValue(e.target.value)}
-              />
+            <div className="inputs">
+              <div className="input">
+                <p>Valor:</p>
+                <div className="value">
+                  <p>R$</p>
+                  <Input
+                    currency
+                    thousandSeparator={"."}
+                    decimalSeparator={","}
+                    decimalScale={2}
+                    fixedDecimalScale
+                    placeholder="0,00"
+                    withBorder
+                    value={voucherValue}
+                    onChange={(e) => setVoucherValue(e.target.value)}
+                  />
+                </div>
+              </div>
+              <div className="input">
+                <p>Quantidade:</p>
+                <div className="value">
+                  <Input
+                    placeholder="0"
+                    withBorder
+                    type="number"
+                    value={voucherAmount}
+                    onChange={(e) => setVoucherAmount(e.target.value)}
+                  />
+                </div>
+              </div>
             </div>
+            <Spacer />
+            <EnterprisesList
+              invertAnimation
+              enterprises={enterprises}
+              selectedEnterprise={selectedEnterprise}
+              setSelectedEnterprise={setSelectedEnterprise}
+              enterpriseWidth={"47%"}
+            />
           </div>
-          <Button onClick={createVoucher}>Criar</Button>
+          <Button onClick={runCreateVoucher}>Criar</Button>
         </CreateModal>
       </Modal>
 
@@ -524,7 +531,7 @@ const Vouchers = () => {
               </div>
             </div>
           </div>
-          <Button onClick={saveVoucher}>Salvar</Button>
+          <Button onClick={runEditVoucher}>Salvar</Button>
         </EditModal>
       </Modal>
 
@@ -574,7 +581,7 @@ const Vouchers = () => {
             {actualVoucher?.voucher}
           </p>
           <Button
-            onClick={removeVoucher}
+            onClick={runDeleteVoucher}
             style={{ backgroundColor: colors.red, width: "100%" }}
           >
             Remover
@@ -588,7 +595,7 @@ const Vouchers = () => {
         </div>
       </Modal>
 
-      <Modal
+      {/* <Modal
         to="left"
         isOpen={verifyMassiveCreationModal}
         setIsOpen={setVerifyMassiveCreationModal}
@@ -613,7 +620,7 @@ const Vouchers = () => {
           <Spacer />
           <div className="actions">
             <Button
-              onClick={massiveCreation}
+              onClick={runMassiveCreateVoucher}
               style={{
                 backgroundColor: colors.green,
               }}
@@ -628,7 +635,7 @@ const Vouchers = () => {
             </Button>
           </div>
         </VerifyMassiveCreationModal>
-      </Modal>
+      </Modal> */}
     </AnimatedPage>
   );
 };

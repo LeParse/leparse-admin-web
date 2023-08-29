@@ -36,13 +36,12 @@ const ListedUser = ({ name, stores, id }) => {
           duration: 0.2,
         },
       }}
-      onClick={gotoUser}
+      // onClick={gotoUser}
     >
       <FaUser
-        size={24}
+        size={18}
         style={{
           gridArea: "icon",
-          flexBasis: "7%",
         }}
       />
       <p className="name">{name}</p>
@@ -55,14 +54,14 @@ const ListedUser = ({ name, stores, id }) => {
           return store;
         })}
       </p>
-      <SlArrowRight
+      {/* <SlArrowRight
         size={18}
         color={colors.black}
         style={{
           gridArea: "details",
           flexBasis: "7%",
         }}
-      />
+      /> */}
     </Container>
   );
 };

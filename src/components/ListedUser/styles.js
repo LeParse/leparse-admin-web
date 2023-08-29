@@ -15,7 +15,7 @@ export const Container = styled(m.div)`
 
   transition: 100ms ease;
 
-  &:hover {
+  /* &:hover {
     color: ${colors.primary};
     fill: ${colors.primary};
 
@@ -28,7 +28,7 @@ export const Container = styled(m.div)`
     }
 
     cursor: pointer;
-  }
+  } */
 
   .name {
     grid-area: name;
