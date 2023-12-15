@@ -126,7 +126,7 @@ export const Container = styled.div`
   table {
     width: 100%;
 
-    /* table-layout: fixed; */
+    table-layout: fixed;
     border-collapse: separate;
 
     th,
@@ -186,8 +186,8 @@ export const Container = styled.div`
         }
 
         svg {
-          width: 1.5rem;
-          height: 1.5rem;
+          width: 2.5rem;
+          height: 2.5rem;
           cursor: pointer;
 
           user-select: none;
@@ -280,8 +280,7 @@ export const Header = styled.div`
     color: ${colors.black};
   }
 
-  svg:nth-child(1),
-  svg:nth-child(4) {
+  #backButton {
     width: 2rem;
     height: 2rem;
     fill: ${colors.black};
@@ -296,152 +295,22 @@ export const Header = styled.div`
   }
 
   #createButton {
+    width: 3rem;
+    height: 3rem;
+
     position: absolute;
     right: 2rem;
 
     padding: 0.5rem;
 
+    cursor: pointer;
+
+    transition: 100ms ease;
+
     &:hover {
       transform: translateY(-0.25rem);
       fill: ${colors.green};
     }
-  }
-`;
-
-export const CreateModal = styled.div`
-  display: flex;
-  height: 100%;
-  flex-direction: column;
-
-  .modalHeader {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-
-    gap: 5rem;
-
-    color: ${colors.black};
-
-    p {
-      font-family: Raleway;
-      font-size: 1.5rem;
-      font-weight: 900;
-    }
-
-    svg {
-      width: 1.25rem;
-      height: 1.25rem;
-
-      cursor: pointer;
-
-      fill: ${colors.black};
-      transition: 100ms ease;
-
-      &:hover {
-        transform: translateY(-0.25rem) scale(1.05);
-        fill: ${colors.red};
-      }
-    }
-  }
-
-  .modalContent {
-    width: 100%;
-    height: 100%;
-
-    display: grid;
-
-    grid-template-columns: 1fr 0.1fr 2fr;
-
-    gap: 1rem;
-
-    overflow: auto;
-
-    .field {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: center;
-
-      background-color: red;
-      gap: 2rem;
-
-      p {
-        font-family: Raleway;
-        font-size: 1rem;
-        font-weight: 400;
-      }
-
-      input {
-        width: 6rem;
-        text-align: right;
-      }
-    }
-
-    .left {
-      grid-column-start: 1;
-
-      display: grid;
-      height: 100%;
-
-      grid-template-areas:
-        "name nameInput"
-        "user userInput"
-        "email emailInput";
-
-      p,
-      input {
-        align-self: center;
-        font-family: Raleway;
-        color: ${colors.black};
-      }
-
-      p {
-        font-weight: 700;
-        opacity: 0.5;
-      }
-
-      input {
-        font-weight: 700;
-      }
-    }
-
-    .right {
-      grid-column-start: 3;
-      height: 100%;
-      overflow-x: visible;
-      overflow-y: auto;
-      position: relative;
-
-      padding-top: 2rem;
-      padding-bottom: 2rem;
-
-      -webkit-mask-image: linear-gradient(
-        180deg,
-        rgba(0, 0, 0, 0) 0%,
-        rgba(0, 0, 0, 1) 7.5% 92.5%,
-        rgba(0, 0, 0, 0) 100%
-      );
-      -webkit-mask-position: center;
-
-      mask-image: linear-gradient(
-        180deg,
-        rgba(0, 0, 0, 0) 0%,
-        rgba(0, 0, 0, 1) 7.5% 92.5%,
-        rgba(0, 0, 0, 0) 100%
-      );
-      mask-position: center;
-    }
-  }
-
-  button {
-    width: 12%;
-    height: 4rem;
-    margin-top: 2rem;
-
-    background-color: ${colors.green};
-
-    align-self: flex-end;
   }
 `;
 
@@ -575,7 +444,7 @@ export const CreateEnterpriseModal = styled.div`
         gap: 1rem;
 
         input {
-          width: 6rem;
+          width: 8rem;
         }
       }
 
@@ -599,5 +468,202 @@ export const CreateEnterpriseModal = styled.div`
     background-color: ${colors.green};
 
     align-self: flex-end;
+  }
+`;
+
+export const EditEnterpriseModal = styled.div`
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+
+  .modalHeader {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 5rem;
+
+    color: ${colors.black};
+
+    p {
+      font-family: Raleway;
+      font-size: 1.5rem;
+      font-weight: 900;
+    }
+
+    svg {
+      width: 1.25rem;
+      height: 1.25rem;
+
+      cursor: pointer;
+
+      fill: ${colors.black};
+      transition: 100ms ease;
+
+      &:hover {
+        transform: translateY(-0.25rem) scale(1.05);
+        fill: ${colors.red};
+      }
+    }
+  }
+
+  .modalContent {
+    width: 100%;
+    height: 100%;
+
+    display: grid;
+
+    grid-template-columns: 1fr 0.1fr 2fr;
+
+    gap: 1rem;
+
+    overflow: auto;
+
+    .field {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+
+      background-color: red;
+      gap: 2rem;
+
+      p {
+        font-family: Raleway;
+        font-size: 1rem;
+        font-weight: 400;
+      }
+
+      input {
+        width: 6rem;
+        text-align: right;
+      }
+    }
+
+    .left {
+      grid-column-start: 1;
+
+      display: grid;
+      height: 100%;
+
+      grid-template-areas:
+        "name nameInput"
+        "cnpj cnpjInput"
+        "phone phoneInput";
+
+      p,
+      input {
+        align-self: center;
+        font-family: Raleway;
+        color: ${colors.black};
+      }
+
+      p {
+        font-weight: 700;
+        opacity: 0.5;
+        cursor: pointer;
+      }
+
+      input {
+        font-weight: 700;
+      }
+    }
+
+    .right {
+      grid-column-start: 3;
+      height: 100%;
+
+      overflow: auto;
+
+      p,
+      input {
+        align-self: center;
+        font-family: Raleway;
+        color: ${colors.black};
+      }
+
+      p {
+        font-weight: 700;
+        opacity: 0.5;
+        cursor: pointer;
+      }
+
+      input {
+        font-weight: 700;
+      }
+
+      .header {
+        width: "100%";
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 1rem;
+
+        input {
+          width: 8rem;
+        }
+      }
+
+      .addressInputs {
+        width: 100%;
+        height: 70%;
+        display: flex;
+        gap: 1rem;
+        position: relative;
+
+        flex-wrap: wrap;
+      }
+    }
+  }
+
+  button {
+    width: 12%;
+    height: 4rem;
+    margin-top: 2rem;
+
+    background-color: ${colors.orange};
+
+    align-self: flex-end;
+  }
+`;
+
+export const FilterModal = styled.div`
+  width: 100%;
+  height: 100%;
+
+  .modalHeader {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 5rem;
+
+    color: ${colors.black};
+
+    p {
+      font-family: Raleway;
+      font-size: 1.5rem;
+      font-weight: 900;
+    }
+
+    svg {
+      width: 1.25rem;
+      height: 1.25rem;
+
+      cursor: pointer;
+
+      fill: ${colors.black};
+      transition: 100ms ease;
+
+      &:hover {
+        transform: translateY(-0.25rem) scale(1.05);
+        fill: ${colors.red};
+      }
+    }
+  }
+
+  .modalContent {
   }
 `;

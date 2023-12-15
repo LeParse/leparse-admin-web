@@ -21,6 +21,7 @@ api.interceptors.response.use(
     return response;
   },
   function (error) {
+    console.log(error.response);
     if (error.response.status === 401 || error.response.status === 403) {
       window.location = "/login?expiredToken=true";
     } else {

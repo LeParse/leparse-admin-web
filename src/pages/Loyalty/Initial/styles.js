@@ -647,7 +647,7 @@ export const CreateEnterpriseModal = styled.div`
         gap: 1rem;
 
         input {
-          width: 6rem;
+          width: 8rem;
         }
       }
 

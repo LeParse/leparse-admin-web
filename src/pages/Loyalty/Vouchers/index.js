@@ -8,22 +8,23 @@ import { useDebounce } from "../../../utils/debounce.utils";
 
 import { useLoyalty } from "../../../contexts/loyalty";
 
-import AnimatedPage from "../../../components/AnimatedPage";
 import Block from "../../../components/Block";
-import Spacer from "../../../components/Spacer";
 import NoContent from "../../../components/NoContent";
-import Input from "../../../components/Input";
-import Button from "../../../components/Button";
-import Modal from "../../../components/Modal";
-import SearchBar from "../../../components/SearchBar";
 import EnterprisesList from "../../../components/EnterprisesList";
+
+import {
+  AnimatedPage,
+  Spacer,
+  Input,
+  Button,
+  Modal,
+  SearchBar,
+} from "@leparse/ui";
 
 import { ReactComponent as BackIcon } from "../../../assets/svg/back-icon.svg";
 import { ReactComponent as EditIcon } from "../../../assets/svg/edit-icon.svg";
 import { ReactComponent as TrashIcon } from "../../../assets/svg/trash-icon.svg";
 import { ReactComponent as CloseIcon } from "../../../assets/svg/close-icon.svg";
-
-import api from "../../../services/api";
 
 import colors from "../../../global/colors";
 import {
@@ -32,20 +33,13 @@ import {
   Header,
   CreateModal,
   EditModal,
-  VerifyMassiveCreationModal,
 } from "./styles";
 
 const Vouchers = () => {
   const navigate = useNavigate();
 
-  const {
-    enterprises,
-    vouchers,
-    createVoucher,
-    editVoucher,
-    deleteVoucher,
-    massiveCreateVoucher,
-  } = useLoyalty();
+  const { enterprises, vouchers, createVoucher, editVoucher, deleteVoucher } =
+    useLoyalty();
 
   const [createVoucherModalVisible, setCreateVoucherModalVisible] =
     useState(false);
@@ -57,9 +51,6 @@ const Vouchers = () => {
   const [voucherAmount, setVoucherAmount] = useState(0);
   const [selectedEnterprise, setSelectedEnterprise] = useState("");
   const [actualVoucher, setActualVoucher] = useState({});
-
-  const [verifyMassiveCreationModal, setVerifyMassiveCreationModal] =
-    useState(false);
 
   const [searchText, setSearchText] = useDebounce("");
 
@@ -310,7 +301,11 @@ const Vouchers = () => {
           }}
         >
           <Header>
-            <BackIcon throwIfNamespace={false} onClick={goBack} />
+            <BackIcon
+              throwIfNamespace={false}
+              onClick={goBack}
+              className="back_button"
+            />
             <h1>Vouchers</h1>
             <SearchBar
               style={{
@@ -323,6 +318,7 @@ const Vouchers = () => {
               onClick={() => setCreateVoucherModalVisible(true)}
               size={32}
               color={colors.black}
+              className="create_voucher_button"
             />
           </Header>
           <Spacer />
@@ -417,6 +413,9 @@ const Vouchers = () => {
         isOpen={createVoucherModalVisible}
         setIsOpen={setCreateVoucherModalVisible}
         shouldCloseOnOverlayClick
+        overlayStyle={{
+          left: "-9rem",
+        }}
         contentStyle={{
           width: "36.5%",
           height: "90%",
@@ -481,6 +480,9 @@ const Vouchers = () => {
         isOpen={editVoucherModalVisible}
         setIsOpen={setEditVoucherModalVisible}
         shouldCloseOnOverlayClick
+        overlayStyle={{
+          left: "-9rem",
+        }}
         contentStyle={{
           width: "auto",
           height: "auto",
@@ -540,6 +542,9 @@ const Vouchers = () => {
         setIsOpen={setRemoveVoucherModalVisible}
         shouldCloseOnOverlayClick
         to="bottom"
+        overlayStyle={{
+          left: "-9rem",
+        }}
         contentStyle={{
           width: "24rem",
           height: "auto",
@@ -594,48 +599,6 @@ const Vouchers = () => {
           </Button>
         </div>
       </Modal>
-
-      {/* <Modal
-        to="left"
-        isOpen={verifyMassiveCreationModal}
-        setIsOpen={setVerifyMassiveCreationModal}
-        shouldCloseOnOverlayClick
-        contentStyle={{
-          width: "24rem",
-          height: "auto",
-          padding: "2rem",
-          position: "absolute",
-          right: "2rem",
-        }}
-      >
-        <VerifyMassiveCreationModal>
-          <p>
-            Tem certeza que deseja criar {massiveCreationAmount} voucher
-            {massiveCreationAmount > 1 && "s"}, no valor de R${" "}
-            {currencyFormat(
-              massiveCreationValue.replace(".", "").replace(",", ".")
-            )}
-            ?
-          </p>
-          <Spacer />
-          <div className="actions">
-            <Button
-              onClick={runMassiveCreateVoucher}
-              style={{
-                backgroundColor: colors.green,
-              }}
-            >
-              Criar
-            </Button>
-            <Button
-              onClick={() => setVerifyMassiveCreationModal(false)}
-              style={{ backgroundColor: colors.grey }}
-            >
-              Cancelar
-            </Button>
-          </div>
-        </VerifyMassiveCreationModal>
-      </Modal> */}
     </AnimatedPage>
   );
 };

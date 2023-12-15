@@ -3,10 +3,10 @@ import { useNavigate } from "react-router-dom";
 import { useAnimationControls } from "framer-motion";
 
 import Block from "../../../components/Block";
-import Spacer from "../../../components/Spacer";
 import ListedUser from "../../../components/ListedUser";
 // import ListedStore from "../../../components/ListedStore";
-import AnimatedPage from "../../../components/AnimatedPage";
+
+import { AnimatedPage, Spacer } from "@leparse/ui";
 
 import { SlArrowRight } from "react-icons/sl";
 

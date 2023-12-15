@@ -7,7 +7,7 @@ import { m, useAnimationControls } from "framer-motion";
 
 import { useGlobal } from "../../contexts/global";
 
-import Button from "../../components/Button";
+import { Button } from "@leparse/ui";
 
 import adminLogo from "../../assets/images/admin-logo.png";
 

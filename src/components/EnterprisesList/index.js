@@ -7,6 +7,7 @@ const EnterprisesList = ({
   enterpriseWidth,
   gap,
   invertAnimation,
+  style,
 }) => {
   function selectEnterprise(ent = "") {
     setSelectedEnterprise(ent);
@@ -16,6 +17,7 @@ const EnterprisesList = ({
     <Container
       style={{
         gap,
+        ...style,
       }}
     >
       {enterprises?.map((ent) => (

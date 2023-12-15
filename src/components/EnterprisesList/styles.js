@@ -10,7 +10,7 @@ export const Container = styled.div`
   gap: 1rem;
 
   width: 100%;
-  height: 20rem;
+  max-height: 20rem;
 
   overflow: hidden auto;
 

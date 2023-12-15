@@ -380,35 +380,36 @@ export const Header = styled.div`
     color: ${colors.black};
   }
 
-  svg {
-    &:nth-child(1),
-    &:nth-child(4) {
-      width: 2rem;
-      height: 2rem;
-      fill: ${colors.black};
+  .back_button {
+    width: 3rem;
+    height: 3rem;
+    fill: ${colors.black};
 
-      cursor: pointer;
-      transition: 100ms ease;
+    cursor: pointer;
+    transition: 100ms ease;
 
-      padding: 0.5rem;
-    }
-
-    &:nth-child(4) {
-      position: absolute;
-      right: 1rem;
-      padding: 1rem;
-    }
+    padding: 0.5rem;
 
     &:hover {
-      &:nth-child(1) {
-        transform: translateX(-0.25rem) scale(1.05);
-        fill: ${colors.primary};
-      }
+      transform: translateX(-0.25rem) scale(1.05);
+      fill: ${colors.primary};
+    }
+  }
 
-      &:nth-child(4) {
-        transform: translateY(-0.25rem) scale(1.05);
-        fill: ${colors.green};
-      }
+  .create_voucher_button {
+    width: 4rem;
+    height: 4rem;
+    position: absolute;
+    right: 1rem;
+    padding: 1rem;
+
+    transition: 100ms ease;
+
+    cursor: pointer;
+
+    &:hover {
+      transform: translateY(-0.25rem) scale(1.05);
+      fill: ${colors.green};
     }
   }
 `;

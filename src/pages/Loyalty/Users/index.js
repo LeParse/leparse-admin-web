@@ -10,15 +10,18 @@ import { useLoyalty } from "../../../contexts/loyalty";
 
 import { useDebounce } from "../../../utils/debounce.utils";
 
-import AnimatedPage from "../../../components/AnimatedPage";
 import Block from "../../../components/Block";
-import Input from "../../../components/Input";
-import Modal from "../../../components/Modal";
-import Button from "../../../components/Button";
-import Spacer from "../../../components/Spacer";
 import NoContent from "../../../components/NoContent";
 import StoresList from "../../../components/StoresList";
-import SearchBar from "../../../components/SearchBar";
+
+import {
+  AnimatedPage,
+  Button,
+  Spacer,
+  SearchBar,
+  Modal,
+  Input,
+} from "@leparse/ui";
 
 import noUserIcon from "../../../assets/icons/no-user-icon.jpg";
 
@@ -305,6 +308,9 @@ const Users = () => {
         isOpen={createUserModalVisible}
         setIsOpen={setCreateUserModalVisible}
         shouldCloseOnOverlayClick
+        overlayStyle={{
+          left: "-9rem",
+        }}
         contentStyle={{
           width: "70%",
           maxHeight: "90%",
@@ -369,6 +375,9 @@ const Users = () => {
         setIsOpen={setSelectStoresModal}
         shouldCloseOnOverlayClick
         to="left"
+        overlayStyle={{
+          left: "-9rem",
+        }}
         contentStyle={{
           position: "absolute",
           right: "2rem",
@@ -432,6 +441,9 @@ const Users = () => {
         setIsOpen={setRemoveUserModal}
         shouldCloseOnOverlayClick
         to="left"
+        overlayStyle={{
+          left: "-9rem",
+        }}
         contentStyle={{
           position: "absolute",
           width: "25%",

@@ -296,6 +296,9 @@ export const Header = styled.div`
   }
 
   #createButton {
+    width: 3rem;
+    height: 3rem;
+
     position: absolute;
     right: 2rem;
 

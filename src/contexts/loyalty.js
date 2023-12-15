@@ -59,7 +59,8 @@ const LoyaltyProvider = ({ children }) => {
           JSON.stringify(selectedEnterprise) === '""' ||
           JSON.stringify(selectedEnterprise) === "{}"
         ) {
-          return toast.warn("Preencha todos os campos!");
+          toast.warn("Preencha todos os campos!");
+          reject();
         }
 
         const { data } = await api.post("/loyalty/voucher", {
@@ -81,11 +82,13 @@ const LoyaltyProvider = ({ children }) => {
     return new Promise(async (resolve, reject) => {
       try {
         if (JSON.stringify(actualVoucher) === "{}") {
-          return toast.warn("Selecione um voucher!");
+          toast.warn("Selecione um voucher!");
+          reject();
         }
 
         if (voucherValue === 0) {
-          return toast.warn("Insira o valor do voucher!");
+          toast.warn("Insira o valor do voucher!");
+          reject();
         }
 
         const { data } = await api.put("/loyalty/voucher", {
@@ -112,7 +115,8 @@ const LoyaltyProvider = ({ children }) => {
     return new Promise(async (resolve, reject) => {
       try {
         if (JSON.stringify(actualVoucher) === "{}") {
-          return toast.warn("Selecione um voucher!");
+          toast.warn("Selecione um voucher!");
+          reject();
         }
 
         let { data } = await api.delete(
@@ -144,7 +148,8 @@ const LoyaltyProvider = ({ children }) => {
     return new Promise(async (resolve, reject) => {
       try {
         if (massiveCreationAmount <= 0 || massiveCreationValue <= 0) {
-          return toast.warn("Valores inválidos!");
+          toast.warn("Valores inválidos!");
+          reject();
         }
 
         const { data } = await api.post("/loyalty/voucher/massive", {
@@ -165,15 +170,18 @@ const LoyaltyProvider = ({ children }) => {
   function createUser(name = "", username = "", email = "", unities = []) {
     return new Promise(async (resolve, reject) => {
       if (name?.trim() === "") {
-        return toast.warn("Preencha o nome do usuário!");
+        toast.warn("Preencha o nome do usuário!");
+        reject();
       }
 
       if (username?.trim() === "") {
-        return toast.warn("Preencha o usuário!");
+        toast.warn("Preencha o usuário!");
+        reject();
       }
 
       if (email?.trim() === "") {
-        return toast.warn("Preencha o e-mail usuário!");
+        toast.warn("Preencha o e-mail usuário!");
+        reject();
       }
 
       try {
@@ -190,6 +198,70 @@ const LoyaltyProvider = ({ children }) => {
         setUsers([...users, data]);
 
         resolve([...users, data]);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  function editUser(selectedUser = {}, cod_unity = []) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        if (JSON.stringify(selectedUser) === "{}") {
+          toast.warn("Selecione um usuário!");
+          reject();
+        }
+
+        if (selectedUser?.name?.trim() === "") {
+          toast.warn("Preencha o nome do usuário!");
+          reject();
+        }
+
+        let { data } = await api.put(`/loyalty/user`, {
+          user: {
+            ...selectedUser,
+            cod_unity,
+          },
+        });
+
+        data = data?.user;
+
+        let newUsers = users;
+
+        newUsers[users.findIndex((u) => String(u._id) === String(data._id))] =
+          data;
+
+        setUsers([...newUsers]);
+
+        resolve([...newUsers]);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  function deleteUser(_id = "") {
+    return new Promise(async (resolve, reject) => {
+      try {
+        if (_id === "") {
+          toast.warn("Selecione um usuário!");
+          reject();
+        }
+
+        let { data } = await api.delete(`/loyalty/user?_id=${_id}`);
+
+        data = data?.user;
+
+        let newUsers = users;
+
+        newUsers.splice(
+          users.findIndex((u) => String(u._id) === String(data._id)),
+          1
+        );
+
+        setUsers([...newUsers]);
+
+        resolve([...newUsers]);
       } catch (error) {
         reject(error);
       }
@@ -217,7 +289,8 @@ const LoyaltyProvider = ({ children }) => {
           number === "" ||
           neighborhood === ""
         ) {
-          return toast.warn("Preencha todos os campos!");
+          toast.warn("Preencha todos os campos!");
+          reject();
         }
 
         const { data } = await api.post("/loyalty/enterprises", {
@@ -242,61 +315,56 @@ const LoyaltyProvider = ({ children }) => {
     });
   }
 
-  function deleteUser(_id = "") {
+  function editLoyaltyEnterprise(
+    _id,
+    name,
+    cnpj,
+    phone,
+    zip_code,
+    street,
+    number,
+    neighborhood
+  ) {
     return new Promise(async (resolve, reject) => {
       try {
-        if (_id === "") {
-          return toast.warn("Selecione um usuário!");
+        if (
+          !_id ||
+          !name ||
+          !cnpj ||
+          !phone ||
+          !zip_code ||
+          !street ||
+          !number ||
+          !neighborhood
+        ) {
+          toast.warn("Preencha todos os campos!");
+          reject();
         }
 
-        let { data } = await api.delete(`/loyalty/user?_id=${_id}`);
-
-        data = data?.user;
-
-        let newUsers = users;
-
-        newUsers.splice(
-          users.findIndex((u) => String(u._id) === String(data._id)),
-          1
-        );
-
-        setUsers([...newUsers]);
-
-        resolve([...newUsers]);
-      } catch (error) {
-        reject(error);
-      }
-    });
-  }
-
-  function editUser(selectedUser = {}, cod_unity = []) {
-    return new Promise(async (resolve, reject) => {
-      try {
-        if (JSON.stringify(selectedUser) === "{}") {
-          return toast.warn("Selecione um usuário!");
-        }
-
-        if (selectedUser?.name?.trim() === "") {
-          return toast.warn("Preencha o nome do usuário!");
-        }
-
-        let { data } = await api.put(`/loyalty/user`, {
-          user: {
-            ...selectedUser,
-            cod_unity,
+        let { data } = await api.put("/loyalty/enterprises", {
+          _id,
+          name,
+          cnpj,
+          phone,
+          address: {
+            street,
+            number,
+            neighborhood,
+            zip_code,
           },
         });
 
-        data = data?.user;
+        data = data?.enterprise;
 
-        let newUsers = users;
+        let newEnterprises = enterprises;
 
-        newUsers[users.findIndex((u) => String(u._id) === String(data._id))] =
-          data;
+        newEnterprises[
+          enterprises.findIndex((ent) => String(ent._id) === String(data._id))
+        ] = data;
 
-        setUsers([...newUsers]);
+        setEnterprises([...newEnterprises]);
 
-        resolve([...newUsers]);
+        resolve([...newEnterprises]);
       } catch (error) {
         reject(error);
       }
@@ -321,6 +389,7 @@ const LoyaltyProvider = ({ children }) => {
         deleteVoucher,
         massiveCreateVoucher,
         createLoyaltyEnterprise,
+        editLoyaltyEnterprise,
       }}
     >
       {children}

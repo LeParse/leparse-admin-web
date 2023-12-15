@@ -6,60 +6,55 @@ import { toast } from "react-toastify";
 import { TiPlus } from "react-icons/ti";
 import { IoSearch } from "react-icons/io5";
 
-import { useGlobal } from "../../../contexts/global";
 import { useLoyalty } from "../../../contexts/loyalty";
 
 import { useDebounce } from "../../../utils/debounce.utils";
 
-import AnimatedPage from "../../../components/AnimatedPage";
 import Block from "../../../components/Block";
-import Input from "../../../components/Input";
-import Modal from "../../../components/Modal";
-import Button from "../../../components/Button";
-import Spacer from "../../../components/Spacer";
 import NoContent from "../../../components/NoContent";
-import StoresList from "../../../components/StoresList";
-import SearchBar from "../../../components/SearchBar";
-import LoadingFreeze from "../../../components/LoadingFreeze";
+import FilterButton from "../../../components/FilterButton";
+import EnterprisesList from "../../../components/EnterprisesList";
 
-import noUserIcon from "../../../assets/icons/no-user-icon.jpg";
+import {
+  AnimatedPage,
+  Button,
+  Section,
+  Modal,
+  Input,
+  Spacer,
+  SearchBar,
+  LoadingFreeze,
+  DateTimePicker,
+} from "@leparse/ui";
 
 import { ReactComponent as BackIcon } from "../../../assets/svg/back-icon.svg";
 import { ReactComponent as EditIcon } from "../../../assets/svg/edit-icon.svg";
 import { ReactComponent as TrashIcon } from "../../../assets/svg/trash-icon.svg";
 import { ReactComponent as CloseIcon } from "../../../assets/svg/close-icon.svg";
 
-import api from "../../../services/api";
-
 import colors from "../../../global/colors";
 import {
   Container,
   Header,
   GlobalStyle,
-  CreateModal,
   CreateEnterpriseModal,
+  EditEnterpriseModal,
+  FilterModal,
 } from "./styles";
 
 const Enterprise = () => {
   const navigate = useNavigate();
-  const { enterprise } = useGlobal();
   const {
     enterprises,
-    setEnterprise,
     createLoyaltyEnterprise,
     editLoyaltyEnterprise,
     deleteLoyaltyEnterprise,
   } = useLoyalty();
 
   const [removeEnterpriseModal, setRemoveEnterpriseModal] = useState(false);
-  const [selectStoresModal, setSelectStoresModal] = useState(false);
   const [selectedEnterprise, setSelectedEnterprise] = useState({});
-  const [selectedUnities, setSelectedUnities] = useState([]);
 
-  const [name, setName] = useState("");
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-
+  const [enterpriseId, setEnterpriseId] = useState("");
   const [enterpriseName, setEnterpriseName] = useState("");
   const [enterpriseCNPJ, setEnterpriseCNPJ] = useState("");
   const [enterprisePhone, setEnterprisePhone] = useState("");
@@ -68,10 +63,12 @@ const Enterprise = () => {
   const [enterpriseNumber, setEnterpriseNumber] = useState();
   const [enterpriseNeighborhood, setEnterpriseNeighborhood] = useState("");
 
-  const [unities, setUnities] = useState([]);
-
   const [createEnterpriseModalVisible, setCreateEnterpriseModalVisible] =
     useState(false);
+  const [editEnterpriseModalVisible, setEditEnterpriseModalVisible] =
+    useState(false);
+  const [filterModalVisible, setFilterModalVisible] = useState(true);
+
   const [isFetchingCEP, setIsFetchingCEP] = useState(false);
 
   const [searchText, setSearchText] = useDebounce("");
@@ -97,19 +94,26 @@ const Enterprise = () => {
       setEnterpriseStreet(data.street);
       setEnterpriseNumber(null);
       setEnterpriseNeighborhood(data.neighborhood);
-
+    } catch (err) {
+      toast.error("Falha ao pesquisar CEP!");
+    } finally {
       setTimeout(() => {
         setIsFetchingCEP(false);
       }, 500);
-    } catch (err) {
-      toast.error("Falha ao pesquisar CEP!");
     }
   }
 
-  function editButton(user) {
-    setSelectedEnterprise(user);
-    setSelectedUnities([...user?.cod_unity]);
-    setSelectStoresModal(true);
+  function editButton(enterprise) {
+    setEnterpriseId(enterprise?._id);
+    setEnterpriseName(enterprise?.name);
+    setEnterpriseCNPJ(enterprise?.cnpj);
+    setEnterprisePhone(enterprise?.phone);
+    setEnterpriseZipCode(enterprise?.address?.zip_code);
+    setEnterpriseStreet(enterprise?.address?.street);
+    setEnterpriseNumber(enterprise?.address?.number);
+    setEnterpriseNeighborhood(enterprise?.address?.neighborhood);
+
+    setEditEnterpriseModalVisible(true);
   }
 
   function removeButton(user) {
@@ -137,13 +141,31 @@ const Enterprise = () => {
   }
 
   function runEditLoyaltyEnterprise() {
-    editLoyaltyEnterprise(selectedEnterprise, selectedUnities)
+    editLoyaltyEnterprise(
+      enterpriseId,
+      enterpriseName,
+      enterpriseCNPJ,
+      enterprisePhone,
+      enterpriseZipCode,
+      enterpriseStreet,
+      enterpriseNumber,
+      enterpriseNeighborhood
+    )
       .then(() => {
-        toggleEditEnterpriseModal();
-        toast.success("Usuário salvo!");
+        setEnterpriseId("");
+        setEnterpriseName("");
+        setEnterpriseCNPJ("");
+        setEnterprisePhone("");
+        setEnterpriseZipCode("");
+        setEnterpriseStreet("");
+        setEnterpriseNumber("");
+        setEnterpriseNeighborhood("");
+        setEditEnterpriseModalVisible(false);
+
+        toast.success("Empresa salva!");
       })
       .catch((err) => {
-        toast.error("Falha ao salvar usuário!");
+        toast.error("Falha ao salvar empresa!");
       });
   }
 
@@ -159,17 +181,17 @@ const Enterprise = () => {
   }
 
   function toggleCreateEnterpriseModal() {
-    setName("");
-    setUsername("");
-    setEmail("");
-    setUnities([]);
-    setCreateEnterpriseModalVisible(!createEnterpriseModalVisible);
-  }
-
-  function toggleEditEnterpriseModal() {
     setSelectedEnterprise({});
-    setSelectedUnities([]);
-    setSelectStoresModal(!selectStoresModal);
+    setEnterpriseId("");
+    setEnterpriseName("");
+    setEnterpriseCNPJ("");
+    setEnterprisePhone("");
+    setEnterpriseZipCode("");
+    setEnterpriseStreet("");
+    setEnterpriseNumber("");
+    setEnterpriseNeighborhood("");
+    setEditEnterpriseModalVisible(false);
+    setCreateEnterpriseModalVisible(!createEnterpriseModalVisible);
   }
 
   function toggleRemoveEnterpriseModal() {
@@ -177,37 +199,8 @@ const Enterprise = () => {
     setRemoveEnterpriseModal(!removeEnterpriseModal);
   }
 
-  async function createUser() {
-    if (name?.trim() === "") {
-      return toast.warn("Preencha o nome do usuário!");
-    }
-
-    if (username?.trim() === "") {
-      return toast.warn("Preencha o usuário!");
-    }
-
-    if (email?.trim() === "") {
-      return toast.warn("Preencha o e-mail usuário!");
-    }
-
-    try {
-      let { data } = await api.post(`/loyalty/user`, {
-        name,
-        username,
-        email,
-        cod_enterprise: enterprise._id,
-        cod_unity: unities,
-      });
-
-      data = data?.user;
-
-      setEnterprise([...enterprises, data]);
-
-      toggleCreateEnterpriseModal();
-      toast.success("Usuário salvo!");
-    } catch (error) {
-      toast.error("Falha ao salvar usuário!");
-    }
+  function toggleFilterModal() {
+    setFilterModalVisible(!filterModalVisible);
   }
 
   const Row = ({ enterprise }) => {
@@ -259,7 +252,7 @@ const Enterprise = () => {
     );
   };
 
-  const UsersTable = useMemo(() => {
+  const EnterprisesTable = useMemo(() => {
     return (
       <m.div
         style={{
@@ -344,17 +337,27 @@ const Enterprise = () => {
           }}
         >
           <Header>
-            <BackIcon throwIfNamespace={false} onClick={goBack} />
+            <BackIcon
+              id="backButton"
+              throwIfNamespace={false}
+              onClick={goBack}
+            />
             <h1>Empresas</h1>
             <SearchBar
               onChange={(e) => {
-                console.log(e.target.value);
                 setSearchText(e.target.value);
               }}
               style={{
                 position: "absolute",
-                right: "6rem",
+                right: "8.5rem",
               }}
+            />
+            <FilterButton
+              style={{
+                position: "absolute",
+                right: "5.5rem",
+              }}
+              onClick={toggleFilterModal}
             />
             <TiPlus
               id="createButton"
@@ -364,7 +367,7 @@ const Enterprise = () => {
             />
           </Header>
           <Spacer />
-          {UsersTable}
+          {EnterprisesTable}
         </Block>
       </Container>
 
@@ -373,6 +376,9 @@ const Enterprise = () => {
         isOpen={createEnterpriseModalVisible}
         setIsOpen={setCreateEnterpriseModalVisible}
         shouldCloseOnOverlayClick
+        overlayStyle={{
+          left: "-9rem",
+        }}
         contentStyle={{
           width: "70%",
           maxHeight: "90%",
@@ -472,7 +478,6 @@ const Enterprise = () => {
                     id="enterpriseStreet"
                     placeholder="Digite o CEP"
                     value={enterpriseStreet}
-                    // onChange={(e) => setEnterpriseStreet(e.target.value)}
                   />
                 </div>
                 <div>
@@ -497,7 +502,6 @@ const Enterprise = () => {
                     id="enterpriseNeighborhood"
                     placeholder="Digite o CEP"
                     value={enterpriseNeighborhood}
-                    // onChange={(e) => setEnterpriseNeighborhood(e.target.value)}
                   />
                 </div>
 
@@ -510,70 +514,145 @@ const Enterprise = () => {
       </Modal>
 
       <Modal
-        isOpen={selectStoresModal}
-        setIsOpen={setSelectStoresModal}
+        to="bottom"
+        isOpen={editEnterpriseModalVisible}
+        setIsOpen={setEditEnterpriseModalVisible}
         shouldCloseOnOverlayClick
-        to="left"
+        overlayStyle={{
+          left: "-9rem",
+        }}
         contentStyle={{
-          position: "absolute",
-          right: "2rem",
-          width: "40%",
-          height: "calc(100% - 4rem)",
+          width: "70%",
+          maxHeight: "90%",
+          padding: "2rem",
+          overflow: "hidden",
         }}
       >
-        <div className="modalHeader">
-          <div className="modalUser">
-            <img
-              src={
-                selectedEnterprise?.photo
-                  ? selectedEnterprise?.photo
-                  : noUserIcon
-              }
-              alt="User"
-            />
-            <Input
-              value={selectedEnterprise?.name}
-              onChange={(e) => {
-                setSelectedEnterprise((u) => {
-                  return {
-                    ...u,
-                    name: e.target.value,
-                  };
-                });
-              }}
-            />
+        <EditEnterpriseModal>
+          <div className="modalHeader">
+            <p>Editar empresa</p>
+            <CloseIcon onClick={() => setEditEnterpriseModalVisible(false)} />
           </div>
-          <div className="modalClose">
-            <p>Selecione as lojas</p>
-            <CloseIcon onClick={toggleEditEnterpriseModal} />
-          </div>
-        </div>
-        <Spacer />
-        <div
-          style={{
-            overflowY: "auto",
-            height: "75%",
-            paddingBottom: "1rem",
-          }}
-        >
-          <StoresList
-            invertAnimation
-            storeWidth={"47.5%"}
-            gap={"1rem"}
-            stores={enterprise?.unities}
-            selectedUnities={selectedUnities}
-            setSelectedUnities={setSelectedUnities}
-          />
-        </div>
-        <div className="modalFooter">
+
           <Spacer />
-          <Button
-            onClick={editLoyaltyEnterprise}
-            style={{ width: "100%", backgroundColor: colors.orange }}
-          >
-            Salvar
-          </Button>
-        </div>
+
+          <div className="modalContent">
+            <div className="left">
+              <p
+                style={{
+                  gridArea: "name",
+                }}
+                onClick={() => focusInput("enterpriseName")}
+              >
+                Nome:
+              </p>
+              <p
+                style={{ gridArea: "cnpj" }}
+                onClick={() => focusInput("enterpriseCNPJ")}
+              >
+                CNPJ:
+              </p>
+              <p
+                style={{ gridArea: "phone" }}
+                onClick={() => focusInput("enterprisePhone")}
+              >
+                Telefone:
+              </p>
+
+              <Input
+                style={{ gridArea: "nameInput" }}
+                placeholder="Digite o nome"
+                id="enterpriseName"
+                value={enterpriseName}
+                onChange={(e) => setEnterpriseName(e.target.value)}
+              />
+              <Input
+                style={{ gridArea: "cnpjInput" }}
+                placeholder="Digite o CNPJ"
+                id="enterpriseCNPJ"
+                masked
+                mask="99.999.999/9999-99"
+                value={enterpriseCNPJ}
+                onChange={(e) => setEnterpriseCNPJ(e.target.value)}
+              />
+              <Input
+                style={{ gridArea: "phoneInput" }}
+                masked
+                mask="+55 (99) 9 9999-9999"
+                maskChar="_"
+                placeholder="Digite o telefone"
+                id="enterprisePhone"
+                value={enterprisePhone}
+                onChange={(e) => setEnterprisePhone(e.target.value)}
+              />
+            </div>
+            <Spacer vertical />
+            <div className="right">
+              <div className="header">
+                <p>CEP:</p>
+                <Input
+                  masked
+                  mask="99999-999"
+                  placeholder="Digite o CEP"
+                  value={enterpriseZipCode}
+                  onChange={(e) => setEnterpriseZipCode(e.target.value)}
+                />
+                <Button
+                  style={{
+                    width: "3rem",
+                    height: "3rem",
+                    margin: 0,
+                    alignSelf: "center",
+                  }}
+                  onClick={searchCEP}
+                >
+                  <IoSearch />
+                </Button>
+              </div>
+              <Spacer />
+              <div className="addressInputs">
+                <div>
+                  <p onClick={() => focusInput("enterpriseStreet")}>
+                    Logradouro:
+                  </p>
+                  <Input
+                    type="text"
+                    id="enterpriseStreet"
+                    placeholder="Digite o CEP"
+                    value={enterpriseStreet}
+                  />
+                </div>
+                <div>
+                  <p onClick={() => focusInput("enterpriseNumber")}>Número:</p>
+                  <Input
+                    type="text"
+                    id="enterpriseNumber"
+                    placeholder="Digite o número"
+                    masked
+                    mask="9999999999"
+                    maskChar=""
+                    value={enterpriseNumber}
+                    onChange={(e) => setEnterpriseNumber(e.target.value)}
+                  />
+                </div>
+                <div>
+                  <p onClick={() => focusInput("enterpriseNeighborhood")}>
+                    Bairro:
+                  </p>
+                  <Input
+                    type="text"
+                    id="enterpriseNeighborhood"
+                    placeholder="Digite o CEP"
+                    value={enterpriseNeighborhood}
+                  />
+                </div>
+
+                <LoadingFreeze show={isFetchingCEP} />
+              </div>
+            </div>
+          </div>
+          <Button onClick={runEditLoyaltyEnterprise}>Salvar</Button>
+        </EditEnterpriseModal>
       </Modal>
 
       <Modal
@@ -581,6 +660,9 @@ const Enterprise = () => {
         setIsOpen={setRemoveEnterpriseModal}
         shouldCloseOnOverlayClick
         to="left"
+        overlayStyle={{
+          left: "-9rem",
+        }}
         contentStyle={{
           position: "absolute",
           width: "25%",
@@ -622,6 +704,48 @@ const Enterprise = () => {
             Cancelar
           </Button>
         </div>
+      </Modal>
+
+      <Modal
+        to="bottom"
+        isOpen={filterModalVisible}
+        setIsOpen={setFilterModalVisible}
+        shouldCloseOnOverlayClick
+        overlayStyle={{
+          left: "-9rem",
+        }}
+        contentStyle={{
+          width: "50%",
+          height: "fit-content",
+          padding: "2rem",
+        }}
+      >
+        <FilterModal>
+          <div className="modalHeader">
+            <p>Filtrar</p>
+            <CloseIcon onClick={toggleFilterModal} />
+          </div>
+
+          <Spacer />
+
+          <div className="modalContent">
+            <Section title="Empresa">
+              <EnterprisesList
+                invertAnimation
+                enterprises={enterprises}
+                selectedEnterprise={selectedEnterprise}
+                setSelectedEnterprise={setSelectedEnterprise}
+                enterpriseWidth={"47%"}
+              />
+            </Section>
+
+            <div className="filter">
+              <p className="filter_title">Período</p>
+
+              <DateTimePicker />
+            </div>
+          </div>
+        </FilterModal>
       </Modal>
     </AnimatedPage>
   );

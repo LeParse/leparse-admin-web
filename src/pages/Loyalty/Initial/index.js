@@ -7,18 +7,21 @@ import { useLoyalty } from "../../../contexts/loyalty";
 import { useGlobal } from "../../../contexts/global";
 
 import Block from "../../../components/Block";
-import Spacer from "../../../components/Spacer";
 import ListedUser from "../../../components/ListedUser";
 import ListedVoucher from "../../../components/ListedVoucher";
 import ListedEnterprise from "../../../components/ListedEnterprise";
-import AnimatedPage from "../../../components/AnimatedPage";
 import NoContent from "../../../components/NoContent";
-import Modal from "../../../components/Modal";
-import Input from "../../../components/Input";
-import Button from "../../../components/Button";
 import StoresList from "../../../components/StoresList";
 import EnterprisesList from "../../../components/EnterprisesList";
-import LoadingFreeze from "../../../components/LoadingFreeze";
+
+import {
+  AnimatedPage,
+  Spacer,
+  Modal,
+  Input,
+  Button,
+  LoadingFreeze,
+} from "@leparse/ui";
 
 import { ReactComponent as CloseIcon } from "../../../assets/svg/close-icon.svg";
 import loyaltyLogo from "../../../assets/images/Logo-white-2.png";
@@ -407,6 +410,9 @@ const Loyalty = () => {
         isOpen={createVoucherModalVisible}
         setIsOpen={setCreateVoucherModalVisible}
         shouldCloseOnOverlayClick
+        overlayStyle={{
+          left: "-9rem",
+        }}
         contentStyle={{
           width: "36.5%",
           height: "90%",
@@ -471,6 +477,9 @@ const Loyalty = () => {
         isOpen={editVoucherModalVisible}
         setIsOpen={setEditVoucherModalVisible}
         shouldCloseOnOverlayClick
+        overlayStyle={{
+          left: "-9rem",
+        }}
         contentStyle={{
           width: "auto",
           height: "auto",
@@ -523,6 +532,9 @@ const Loyalty = () => {
         isOpen={createUserModalVisible}
         setIsOpen={setCreateUserModalVisible}
         shouldCloseOnOverlayClick
+        overlayStyle={{
+          left: "-9rem",
+        }}
         contentStyle={{
           width: "70%",
           maxHeight: "90%",
@@ -587,6 +599,9 @@ const Loyalty = () => {
         isOpen={createEnterpriseModalVisible}
         setIsOpen={setCreateEnterpriseModalVisible}
         shouldCloseOnOverlayClick
+        overlayStyle={{
+          left: "-9rem",
+        }}
         contentStyle={{
           width: "70%",
           maxHeight: "90%",

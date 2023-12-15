@@ -2,10 +2,9 @@ import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
-import AnimatedPage from "../../components/AnimatedPage";
 import Block from "../../components/Block";
-import Input from "../../components/Input";
-import Button from "../../components/Button";
+
+import { AnimatedPage, Input, Button } from "@leparse/ui";
 
 import api from "../../services/api";
 

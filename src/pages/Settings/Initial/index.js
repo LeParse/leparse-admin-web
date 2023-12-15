@@ -8,10 +8,8 @@ import { toast } from "react-toastify";
 import { useGlobal } from "../../../contexts/global";
 
 import Block from "../../../components/Block";
-import Spacer from "../../../components/Spacer";
-import AnimatedPage from "../../../components/AnimatedPage";
-import Button from "../../../components/Button";
-import Input from "../../../components/Input";
+
+import { Spacer, AnimatedPage, Button, Input } from "@leparse/ui";
 
 import leParseLogo from "../../../assets/images/leparse-logo.png";
 import shareIcon from "../../../assets/icons/share-icon.png";
