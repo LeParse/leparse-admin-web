@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "@babel/plugin-transform-private-property-in-object": "latest",
     "@emotion/is-prop-valid": "^1.2.1",
     "@leparse/ui": "^0.1.24",
     "@testing-library/jest-dom": "^5.16.5",
